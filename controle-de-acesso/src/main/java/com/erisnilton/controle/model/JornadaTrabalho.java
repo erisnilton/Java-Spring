@@ -1,6 +1,7 @@
 package com.erisnilton.controle.model;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 @EqualsAndHashCode
 @Builder
 @Entity
+@Audited
 public class JornadaTrabalho {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
