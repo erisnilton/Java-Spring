@@ -6,6 +6,8 @@ import com.erisnilton.libraryapi.api.service.BookService;
 import com.erisnilton.libraryapi.exception.BussinessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements BookService {
     private BookRepository repository;
@@ -20,5 +22,26 @@ public class BookServiceImpl implements BookService {
             throw new BussinessException("Isbn already registered.");
         }
         return repository.save(book);
+    }
+
+    @Override
+    public Optional<Book> getById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public void delete(Book book) {
+        if(book == null || book.getId() == null) {
+            throw new IllegalArgumentException("Book id cant be null.");
+        }
+        repository.delete(book);
+    }
+
+    @Override
+    public Book update(Book book) {
+        if(book == null || book.getId() == null) {
+            throw new IllegalArgumentException("Book id cant be null.");
+        }
+       return repository.save(book);
     }
 }
