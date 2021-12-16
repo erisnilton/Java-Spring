@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @DataJpaTest
-public class    BookRepositoryTest {
+public class BookRepositoryTest {
 
     @Autowired
     TestEntityManager entityManager;
@@ -65,6 +65,17 @@ public class    BookRepositoryTest {
         Optional<Book> foundBook = repository.findById(book.getId());
 
         assertThat(foundBook.isPresent()).isTrue();
+
+    }
+
+    @Test
+    @DisplayName("Shoul save a boook")
+    public void saveBook(){
+        Book book = createBook("123");
+
+        Book savedBook = repository.save(book);
+
+        assertThat(savedBook.getId()).isNotNull();
 
     }
 
