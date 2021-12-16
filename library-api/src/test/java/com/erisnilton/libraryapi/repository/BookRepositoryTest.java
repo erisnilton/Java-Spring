@@ -69,7 +69,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("Shoul save a boook")
+    @DisplayName("Shoul save a book")
     public void saveBook(){
         Book book = createBook("123");
 
@@ -77,6 +77,21 @@ public class BookRepositoryTest {
 
         assertThat(savedBook.getId()).isNotNull();
 
+    }
+
+    @Test
+    @DisplayName("Should delete a book")
+    public void deleteBook(){
+        Book book = createBook("123");
+        entityManager.persist(book);
+
+        Book foundBook = entityManager.find(Book.class, book.getId());
+
+        repository.delete(foundBook);
+
+        Book deletedBook = entityManager.find(Book.class, book.getId());
+
+        assertThat(deletedBook).isNull();
     }
 
     private Book createBook(String isbn) {
