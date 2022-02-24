@@ -3,7 +3,9 @@ package com.erisnilton.controle.model;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Audited
-public class Usuario {
+public class User {
     @Id
     private Long id;
     @ManyToOne
@@ -26,7 +28,7 @@ public class Usuario {
     @ManyToOne
     private NivelAcesso nivelAcesso;
     @ManyToOne
-    private JornadaTrabalho jornadaTrabalho;
+    private Workingday workingday;
     private BigDecimal tolerancia;
     private LocalDateTime inicioJornada;
     private LocalDateTime finalJornada;

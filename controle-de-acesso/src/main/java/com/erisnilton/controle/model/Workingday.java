@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @Builder
 @Entity
 @Audited
-public class JornadaTrabalho {
+public class Workingday {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
