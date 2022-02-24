@@ -2,7 +2,6 @@ package com.erisnilton.controle.service;
 
 import com.erisnilton.controle.model.Workingday;
 import com.erisnilton.controle.repository.WorkingdayRepository;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
