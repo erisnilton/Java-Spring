@@ -1,22 +1,22 @@
 package com.erisnilton.controle.model;
 
+
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
 @Entity
-public class Localidade {
+@Audited
+public class CategoryUser{
     @Id
     private Long id;
-    @ManyToOne
-    private NivelAcesso nivelAcesso;
     private String descricao;
 }
