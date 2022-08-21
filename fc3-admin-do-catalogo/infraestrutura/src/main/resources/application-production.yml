@@ -1,0 +1,20 @@
+mysql:
+  username: ${DATABASE_MYSQL_USERNAME:root}
+  password: ${DATABASE_MYSQL_PASSWORD:123456}
+  schema: adm_videos
+  url: ${DATABASE_MYSQL_URL:localhost:3306}
+  server:
+    port: 8080
+    compression:
+      enabled: true
+      mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+      min-response-size: 1024
+    undertow:
+      threads:
+        worker: 64
+        io: 4
+  spring:
+    jpa:
+      open-in-view: false
+      hibernate:
+        ddl-auto: none
