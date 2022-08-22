@@ -76,7 +76,6 @@ public class CategoryJpaEntity {
                 getCreatedAt(),
                 getUpdatedAt(),
                 getDeletedAt()
-
         );
     }
 

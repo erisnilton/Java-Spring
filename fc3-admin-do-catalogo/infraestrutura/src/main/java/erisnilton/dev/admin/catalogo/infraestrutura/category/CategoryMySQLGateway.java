@@ -6,18 +6,19 @@ import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class CategoryMSQLGateway implements CategoryGateway {
+public class CategoryMySQLGateway implements CategoryGateway {
 
     private CategoryRepository repository;
 
-    public CategoryMSQLGateway(final CategoryRepository repository) {
-        this.repository = Objects.requireNonNull(repository);
+    public CategoryMySQLGateway(final CategoryRepository repository) {
+        this.repository = repository;
     }
 
     @Override
