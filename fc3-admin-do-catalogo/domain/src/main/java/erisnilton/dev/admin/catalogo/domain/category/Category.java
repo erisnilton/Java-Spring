@@ -4,6 +4,7 @@ import erisnilton.dev.admin.catalogo.domain.AggregateRoot;
 import erisnilton.dev.admin.catalogo.domain.validation.ValidationHandler;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Category extends AggregateRoot<CategoryID> implements Cloneable {
@@ -27,8 +28,8 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
         this.name = aName;
         this.description = aDescription;
         this.active = isActive;
-        this.createdAt = aCreationDate;
-        this.updatedAt = aUpdateDate;
+        this.createdAt = Objects.requireNonNull(aCreationDate, "'createdAt' should not be null");
+        this.updatedAt = Objects.requireNonNull(aUpdateDate, "'updatedAt' should not be null");
         this.deletedAt = aDeleteDate;
     }
 
@@ -56,17 +57,17 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
                 deletedAt
         );
     }
-    public static Category with(final Category aCategory) {
-        return with(
-                aCategory.getId(),
-                aCategory.getName(),
-                aCategory.getDescription(),
-                aCategory.isActive(),
-                aCategory.getCreatedAt(),
-                aCategory.getUpdatedAt(),
-                aCategory.getDeletedAt()
-        );
-    }
+        public static Category with(final Category aCategory) {
+            return with(
+                    aCategory.getId(),
+                    aCategory.getName(),
+                    aCategory.getDescription(),
+                    aCategory.isActive(),
+                    aCategory.getCreatedAt(),
+                    aCategory.getUpdatedAt(),
+                    aCategory.getDeletedAt()
+            );
+        }
 
     @Override
     public void validate(final ValidationHandler handler) {

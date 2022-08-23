@@ -5,6 +5,7 @@ import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryJpaEntity;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class CategoryMySQLGateway implements CategoryGateway {
     }
 
     @Override
-    public Category create(Category aCategory) {
-        return null;
+    public Category create(final Category aCategory) {
+        return this.repository.save(CategoryJpaEntity.from(aCategory)).toAgregate();
     }
 
     @Override
