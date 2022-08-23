@@ -124,6 +124,44 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertEquals(0, categoryRepository.count());
 
     }
+
+    @Test
+    public void givenPrePersistedCategoryAndValidCategoryId_whenCallsFindById_shouldReturnACategory() {
+
+        var expectedName = "Filmes";
+        var expectedDescription = "A Categoria mais assistida";
+        var expectedIsActive = true;
+
+        final var aCategory = Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(aCategory));
+
+        final var actualCategory = categoryGateway.findById(aCategory.getId()).get();
+
+        Assertions.assertEquals(1, categoryRepository.count());
+
+        Assertions.assertEquals(aCategory.getId(), actualCategory.getId());
+        Assertions.assertEquals(expectedName, actualCategory.getName());
+        Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
+        Assertions.assertEquals(aCategory.getCreatedAt(), actualCategory.getCreatedAt());
+        Assertions.assertEquals(aCategory.getUpdatedAt(), actualCategory.getUpdatedAt());
+        Assertions.assertEquals(aCategory.getDeletedAt(), actualCategory.getDeletedAt());
+        Assertions.assertNull(actualCategory.getDeletedAt());
+
+    }
+
+    @Test
+    public void givenAValidCategoryIdNotStored_whenCallsFindById_shouldReturnEmpty() {
+
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        final var actualCategory = categoryGateway.findById(CategoryID.from("invalid"));
+
+        Assertions.assertTrue(actualCategory.isEmpty());
+    }
 }
 
 
