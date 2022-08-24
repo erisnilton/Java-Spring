@@ -7,11 +7,20 @@ import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryJpaEntity;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import erisnilton.dev.admin.catalogo.infraestrutura.utils.SpeficicationUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Optional;
+
+import static erisnilton.dev.admin.catalogo.infraestrutura.utils.SpeficicationUtils.*;
+import static org.springframework.data.domain.Sort.Direction;
+import static org.springframework.data.domain.Sort.by;
 
 @Service
 public class CategoryMySQLGateway implements CategoryGateway {
@@ -49,7 +58,32 @@ public class CategoryMySQLGateway implements CategoryGateway {
 
     @Override
     public Pagination<Category> findAll(CategorySearchQuery aQuery) {
-        return null;
+
+        // Paginação
+        final var page = PageRequest.of(
+                aQuery.page(),
+                aQuery.perPage(),
+                by(Direction.fromString(aQuery.direction()), aQuery.sort())
+        );
+
+        // Busca dinamica pelo criterio tems (name ou description)
+
+        final var specifications = Optional.ofNullable(aQuery.terms())
+                .filter(str -> !str.isBlank())
+                .map(str -> SpeficicationUtils
+                        .<CategoryJpaEntity>like("name", str)
+                        .or(like("description", str))
+
+                )
+                .orElse(null);
+
+        final var pageResult =  this.repository.findAll(Specification.where(specifications), page);
+        return new Pagination<>(
+                pageResult.getNumber(),
+                pageResult.getSize(),
+                pageResult.getTotalElements(),
+                pageResult.map(CategoryJpaEntity::toAgregate).toList()
+        );
     }
 
     private Category save(Category aCategory) {
