@@ -16,7 +16,6 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:4.5.1'
     implementation 'io.vavr:vavr:0.10.4'
 
-
 }
 
 test {

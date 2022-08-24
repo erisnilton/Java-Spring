@@ -3,7 +3,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.category;
 import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
-import erisnilton.dev.admin.catalogo.infraestrutura.MySQLGatewayTest;
+import erisnilton.dev.admin.catalogo.MySQLGatewayTest;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryJpaEntity;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;

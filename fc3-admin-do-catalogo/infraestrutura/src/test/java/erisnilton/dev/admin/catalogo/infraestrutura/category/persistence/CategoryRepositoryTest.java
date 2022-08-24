@@ -2,7 +2,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.category.persistence;
 
 
 import erisnilton.dev.admin.catalogo.domain.category.Category;
-import erisnilton.dev.admin.catalogo.infraestrutura.MySQLGatewayTest;
+import erisnilton.dev.admin.catalogo.MySQLGatewayTest;
 import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
