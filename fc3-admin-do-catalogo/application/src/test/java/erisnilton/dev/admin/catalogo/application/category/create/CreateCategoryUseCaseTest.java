@@ -1,7 +1,6 @@
 package erisnilton.dev.admin.catalogo.application.category.create;
 
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
-import erisnilton.dev.admin.catalogo.domain.exceptions.DomainException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
