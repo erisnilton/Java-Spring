@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -53,8 +52,8 @@ public class GetCategoryByIdUseCaseIT {
         Assertions.assertEquals(expectedName, actualCategory.name());
         Assertions.assertEquals(expectedDescription, actualCategory.description());
         Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
-        Assertions.assertEquals(aCategory.getCreatedAt().truncatedTo(ChronoUnit.DAYS), actualCategory.createdAt().truncatedTo(ChronoUnit.DAYS));
-        Assertions.assertEquals(aCategory.getUpdatedAt().truncatedTo(ChronoUnit.DAYS), actualCategory.updatedAt().truncatedTo(ChronoUnit.DAYS));
+        Assertions.assertEquals(aCategory.getCreatedAt().toEpochMilli(), actualCategory.createdAt().toEpochMilli());
+        Assertions.assertEquals(aCategory.getUpdatedAt().toEpochMilli(), actualCategory.updatedAt().toEpochMilli());
         Assertions.assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt());
     }
 
