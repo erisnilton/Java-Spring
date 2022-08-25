@@ -1,42 +1,47 @@
 package erisnilton.dev.admin.catalogo.application.category.update;
 
+import erisnilton.dev.admin.catalogo.IntegrationTest;
 import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.exceptions.DomainException;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryJpaEntity;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
-public class UpdateCategoryUseCaseTest {
+@IntegrationTest
+public class UpdateCategoryUseCaseIT {
 
-    @InjectMocks
-    private DefaultUpdateCategoryUseCase useCase;
+    @Autowired
+    private UpdateCategoryUseCase useCase;
 
-    @Mock
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @SpyBean
     private CategoryGateway categoryGateway;
-
-    @BeforeEach
-    void cleanUp() {
-        Mockito.reset(categoryGateway);
-    }
 
     @Test
     public void givenAValidCommand_WhenCallsUpdateCatgory_shouldReturnCategoryId() {
 
         final var aCategory = Category.newCategory("Film", null, true);
+
+        save(aCategory);
 
         final var expectedId = aCategory.getId();
         final var expectedName = "Filmes";
@@ -45,33 +50,29 @@ public class UpdateCategoryUseCaseTest {
 
         final var aCommand = UpdateCategoryCommand.with(expectedId.getValue(), expectedName, expectedDescription, expectedIsActive);
 
-        when(categoryGateway.findById(eq(expectedId))).thenReturn(Optional.of(aCategory.clone()));
-
-        when(categoryGateway.update(any())).thenAnswer(returnsFirstArg());
+        Assertions.assertEquals(1, categoryRepository.count());
 
         final var actualOutput = useCase.execute(aCommand).get();
 
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
 
-        verify(categoryGateway, times(1)).findById(eq(expectedId));
+        final var actualCategory = categoryRepository.findById(expectedId.getValue()).get();
 
-        verify(categoryGateway, times(1)).update(argThat(
-                aUpdateCategory ->
-                        Objects.equals(expectedName, aUpdateCategory.getName())
-                                && Objects.equals(expectedDescription, aUpdateCategory.getDescription())
-                                && Objects.equals(expectedIsActive, aUpdateCategory.isActive())
-                                && Objects.equals(expectedId, aUpdateCategory.getId())
-                                && Objects.equals(aCategory.getCreatedAt(), aUpdateCategory.getCreatedAt())
-                                && aCategory.getUpdatedAt().isBefore(aUpdateCategory.getUpdatedAt())
-                                && Objects.isNull(aUpdateCategory.getDeletedAt())
-        ));
+        Assertions.assertEquals(expectedName, actualCategory.getName());
+        Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
+        Assertions.assertEquals(aCategory.getCreatedAt().toEpochMilli(), actualCategory.getCreatedAt().toEpochMilli());
+        Assertions.assertTrue(aCategory.getCreatedAt().isBefore(actualCategory.getCreatedAt()));
+        Assertions.assertTrue(aCategory.getUpdatedAt().isBefore(actualCategory.getUpdatedAt()));
+        Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
     @Test
     public void givenInvalidName_whenCallsUpdateCategory_thenShouldReturnDomainException() {
 
         final var aCategory = Category.newCategory("Film", null, true);
+        save(aCategory);
 
         final var expectedId = aCategory.getId();
 
@@ -81,10 +82,9 @@ public class UpdateCategoryUseCaseTest {
         final var expectedErrorMessage = "'name' should not be null";
         final var expectedErrorCount = 1;
 
+
         final var aCommand =
                 UpdateCategoryCommand.with(expectedId.getValue(), expectedName, expectedDescription, expectedIsActive);
-
-        when(categoryGateway.findById(eq(expectedId))).thenReturn(Optional.of(aCategory.clone()));
 
         final var notification = useCase.execute(aCommand).getLeft();
 
@@ -99,16 +99,14 @@ public class UpdateCategoryUseCaseTest {
     public void givenAValidCommandWithInactiveCategory_whenCallsUpdateCategory_shouldReturnInactiveCategoryId() {
         final var aCategory = Category.newCategory("Film", null, true);
 
+        save(aCategory);
+
         final var expectedId = aCategory.getId();
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = false;
 
         final var aCommand = UpdateCategoryCommand.with(expectedId.getValue(), expectedName, expectedDescription, expectedIsActive);
-
-        when(categoryGateway.findById(eq(expectedId))).thenReturn(Optional.of(aCategory.clone()));
-
-        when(categoryGateway.update(any())).thenAnswer(returnsFirstArg());
 
         Assertions.assertTrue(aCategory.isActive());
         Assertions.assertNull(aCategory.getDeletedAt());
@@ -118,24 +116,24 @@ public class UpdateCategoryUseCaseTest {
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
 
-        verify(categoryGateway, times(1)).findById(eq(expectedId));
+        final var actualCategory = categoryRepository.findById(expectedId.getValue()).get();
 
-        verify(categoryGateway, times(1)).update(argThat(
-                aUpdateCategory ->
-                        Objects.equals(expectedName, aUpdateCategory.getName())
-                                && Objects.equals(expectedDescription, aUpdateCategory.getDescription())
-                                && Objects.equals(expectedIsActive, aUpdateCategory.isActive())
-                                && Objects.equals(expectedId, aUpdateCategory.getId())
-                                && Objects.equals(aCategory.getCreatedAt(), aUpdateCategory.getCreatedAt())
-                                && aCategory.getUpdatedAt().isBefore(aUpdateCategory.getUpdatedAt())
-                                && Objects.nonNull(aUpdateCategory.getDeletedAt())
-        ));
+        Assertions.assertEquals(expectedName, actualCategory.getName());
+        Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
+
+        Assertions.assertEquals(aCategory.getCreatedAt().toEpochMilli(), actualCategory.getCreatedAt().toEpochMilli());
+        Assertions.assertTrue(aCategory.getCreatedAt().isBefore(actualCategory.getCreatedAt()));
+        Assertions.assertTrue(aCategory.getUpdatedAt().isBefore(actualCategory.getUpdatedAt()));
+        Assertions.assertNotNull(actualCategory.getDeletedAt());
     }
 
     @Test
     public void givenAValidCommand_whenGatewayThrowsRandomException_shouldReturnAException() {
 
         final var aCategory = Category.newCategory("Film", null, true);
+
+        save(aCategory);
 
         final var expectedId = aCategory.getId();
 
@@ -148,24 +146,22 @@ public class UpdateCategoryUseCaseTest {
         final var aCommand =
                 UpdateCategoryCommand.with(expectedId.getValue(), expectedName, expectedDescription, expectedIsActive);
 
-        when(categoryGateway.findById(eq(expectedId))).thenReturn(Optional.of(aCategory.clone()));
-        when(categoryGateway.update(any())).thenThrow(new IllegalStateException(expectedErrorMessage));
+        doThrow(new IllegalStateException(expectedErrorMessage)).when(categoryGateway).update(any());
 
         final var notification = useCase.execute(aCommand).getLeft();
 
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
-        verify(categoryGateway, times(1)).update(argThat(
-                aUpdateCategory ->
-                        Objects.equals(expectedName, aUpdateCategory.getName())
-                                && Objects.equals(expectedDescription, aUpdateCategory.getDescription())
-                                && Objects.equals(expectedIsActive, aUpdateCategory.isActive())
-                                && Objects.equals(expectedId, aUpdateCategory.getId())
-                                && Objects.equals(aCategory.getCreatedAt(), aUpdateCategory.getCreatedAt())
-                                && aCategory.getUpdatedAt().isBefore(aUpdateCategory.getUpdatedAt())
-                                && Objects.isNull(aUpdateCategory.getDeletedAt())
-        ));
+        final var actualCategory = categoryRepository.findById(expectedId.getValue()).get();
+
+        Assertions.assertEquals(aCategory.getName(), actualCategory.getName());
+        Assertions.assertEquals(aCategory.getDescription(), actualCategory.getDescription());
+        Assertions.assertEquals(aCategory.isActive(), actualCategory.isActive());
+
+        Assertions.assertEquals(aCategory.getCreatedAt().toEpochMilli(), actualCategory.getCreatedAt().toEpochMilli());
+        Assertions.assertEquals(aCategory.getUpdatedAt().toEpochMilli(), actualCategory.getUpdatedAt().toEpochMilli());
+        Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
     @Test
@@ -180,15 +176,18 @@ public class UpdateCategoryUseCaseTest {
 
         final var aCommand = UpdateCategoryCommand.with(expectedId, expectedName, expectedDescription, expectedIsActive);
 
-        when(categoryGateway.findById(eq(CategoryID.from(expectedId)))).thenReturn(Optional.empty());
 
         final var actualException = Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
 
         Assertions.assertEquals(expectedErrorCounter, actualException.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
 
-        verify(categoryGateway, times(1)).findById(eq(CategoryID.from(expectedId)));
+    }
 
-        verify(categoryGateway, times(0)).update(any());
+
+
+    private void save(final Category... aCategory) {
+        categoryRepository
+                .saveAllAndFlush(Arrays.stream(aCategory).map(CategoryJpaEntity::from).toList());
     }
 }
