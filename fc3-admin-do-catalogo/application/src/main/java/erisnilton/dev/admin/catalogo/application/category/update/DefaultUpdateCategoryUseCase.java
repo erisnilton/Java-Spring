@@ -4,6 +4,7 @@ import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.exceptions.DomainException;
+import erisnilton.dev.admin.catalogo.domain.exceptions.NotFoundException;
 import erisnilton.dev.admin.catalogo.domain.validation.Error;
 import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
 import io.vavr.API;
@@ -43,6 +44,6 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
                 .bimap(Notification::create, UpdateCategoryOutput::from);
     }
     private static Supplier<DomainException> notFound(final CategoryID anId) {
-        return () -> DomainException.with(new Error("Category with ID %s was not found".formatted(anId.getValue())));
+        return () -> NotFoundException.with(Category.class, anId);
     }
 }

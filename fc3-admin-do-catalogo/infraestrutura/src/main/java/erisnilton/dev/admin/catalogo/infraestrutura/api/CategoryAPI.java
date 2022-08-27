@@ -3,6 +3,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.api;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryApiOutput;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CreateCategoryApiInput;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -51,6 +52,18 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
     CategoryApiOutput getById(@PathVariable(name = "id") String id);
+
+    @PutMapping(
+            value = "{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Update a category by it's identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category Update successfully"),
+            @ApiResponse(responseCode = "404", description = "Category was not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
+    ResponseEntity<?> updateById(@PathVariable(name = "id") String id, @RequestBody UpdateCategoryApiInput input);
 
 
 }
