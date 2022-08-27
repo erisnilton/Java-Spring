@@ -1,6 +1,7 @@
 package erisnilton.dev.admin.catalogo.infraestrutura.api;
 
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryApiOutput;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CreateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,8 +16,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "categories")
 @Tag(name = "Categories")
 public interface CategoryAPI {
-
-    @PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new category")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created successfully"),
@@ -39,6 +39,18 @@ public interface CategoryAPI {
             @RequestParam(name = "sort", required = false, defaultValue = "name") final String sort,
             @RequestParam(name = "dir", required = false, defaultValue = "asc") final String dir
     );
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "{id}"
+    )
+    @Operation(summary = "Get a category by it's identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Category was not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
+    CategoryApiOutput getById(@PathVariable(name = "id") String id);
 
 
 }

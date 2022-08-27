@@ -4,6 +4,7 @@ import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.exceptions.DomainException;
+import erisnilton.dev.admin.catalogo.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,10 +60,10 @@ public class GetCategoryByIdUseCaseTest {
 
         when(categoryGateway.findById(eq(expectedId))).thenReturn(Optional.empty());
 
-        final var actualException = Assertions.assertThrows(DomainException.class,
+        final var actualException = Assertions.assertThrows(NotFoundException.class,
                 () -> useCase.execute(expectedId.getValue()));
 
-        Assertions.assertEquals(expectedMessage, actualException.getErrors().get(0).message());
+        Assertions.assertEquals(expectedMessage, actualException.getMessage());
     }
 
     @Test

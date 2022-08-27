@@ -1,14 +1,14 @@
 package erisnilton.dev.admin.catalogo.application.category.retrieve.get;
 
+import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
-import erisnilton.dev.admin.catalogo.domain.exceptions.DomainException;
-import erisnilton.dev.admin.catalogo.domain.validation.Error;
+import erisnilton.dev.admin.catalogo.domain.exceptions.NotFoundException;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase{
+public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase {
 
     private CategoryGateway categoryGateway;
 
@@ -26,7 +26,7 @@ public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase{
 
     }
 
-    private static Supplier<DomainException> notFound(final CategoryID anId) {
-        return () -> DomainException.with(new Error("Category with ID %s was not found".formatted(anId.getValue())));
+    private static Supplier<NotFoundException> notFound(final CategoryID anId) {
+        return () -> NotFoundException.with( Category.class, anId) ;
     }
 }

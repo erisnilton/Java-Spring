@@ -2,6 +2,8 @@ package erisnilton.dev.admin.catalogo.infraestrutura.category.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Instant;
+
 public record CreateCategoryApiInput(
         @JsonProperty("name") String name,
         @JsonProperty("description") String description,
