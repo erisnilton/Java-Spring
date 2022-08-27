@@ -16,3 +16,6 @@ Aqui vai a lista de projetos desse reprositorio:
 :heavy_check_mark: Person API
 
 :heavy_check_mark: Phillips Dev Week API
+
+
+OBS: Entrando em cada repositório Terá um descrição de cada projeto!
