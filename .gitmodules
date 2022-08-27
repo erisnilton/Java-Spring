@@ -2,3 +2,6 @@
 	path = philips-dev-week
 	url = git@github.com:erisnilton/philips-dev-week.git
 	branch = main
+[submodule "barber-savio"]
+	path = barber-savio
+	url = git@github.com:erisnilton/barber-savio.git
