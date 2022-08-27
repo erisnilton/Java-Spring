@@ -1,0 +1,4 @@
+[submodule "philips-dev-week"]
+	path = philips-dev-week
+	url = git@github.com:erisnilton/philips-dev-week.git
+	branch = main
