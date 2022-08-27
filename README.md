@@ -7,4 +7,8 @@ Essse repositório está designado para estudo do linguagem de programação __J
 
 Aqui vai a lista de projetos desse reprositorio:
 
-:heavy_check_mark: Controle de Acesso
+:heavy_check_mark: Bank API
+:heavy_check_mark: Controle de Acesso API
+:heavy_check_mark: FC3 Admin do catalogo API
+:heavy_check_mark: Person APIc
+:heavy_check_mark: Phillips Dev Week API
