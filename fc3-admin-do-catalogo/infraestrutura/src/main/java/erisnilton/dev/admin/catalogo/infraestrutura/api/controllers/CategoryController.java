@@ -3,6 +3,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.api.controllers;
 import erisnilton.dev.admin.catalogo.application.category.create.CreateCategoryCommand;
 import erisnilton.dev.admin.catalogo.application.category.create.CreateCategoryOutput;
 import erisnilton.dev.admin.catalogo.application.category.create.CreateCategoryUseCase;
+import erisnilton.dev.admin.catalogo.application.category.delete.DeleteCategoryUseCase;
 import erisnilton.dev.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;
 import erisnilton.dev.admin.catalogo.application.category.update.UpdateCategoryCommand;
 import erisnilton.dev.admin.catalogo.application.category.update.UpdateCategoryOutput;
@@ -28,14 +29,18 @@ public class CategoryController implements CategoryAPI {
     private final GetCategoryByIdUseCase getCategoryByIdUseCase;
     private final UpdateCategoryUseCase updateCategoryUseCase;
 
+    private final DeleteCategoryUseCase deleteCategoryUseCase;
+
     public CategoryController(
             final CreateCategoryUseCase createCategoryUseCase,
             final GetCategoryByIdUseCase getCategoryByIdUseCase,
-            final UpdateCategoryUseCase updateCategoryUseCase)
+            final UpdateCategoryUseCase updateCategoryUseCase,
+            final DeleteCategoryUseCase deleteCategoryUseCase)
     {
         this.createCategoryUseCase = Objects.requireNonNull(createCategoryUseCase);
         this.getCategoryByIdUseCase = Objects.requireNonNull(getCategoryByIdUseCase);
         this.updateCategoryUseCase = Objects.requireNonNull(updateCategoryUseCase);
+        this.deleteCategoryUseCase = Objects.requireNonNull(deleteCategoryUseCase);
     }
 
     @Override
@@ -73,5 +78,10 @@ public class CategoryController implements CategoryAPI {
         Function<UpdateCategoryOutput, ResponseEntity<?>> onSuccess = ResponseEntity::ok;
 
         return this.updateCategoryUseCase.execute(aCommand).fold(onError, onSuccess);
+    }
+
+    @Override
+    public void deleteById(final String anId) {
+        this.deleteCategoryUseCase.execute(anId);
     }
 }

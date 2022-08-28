@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import erisnilton.dev.admin.catalogo.ControllerTest;
 import erisnilton.dev.admin.catalogo.application.category.create.CreateCategoryOutput;
 import erisnilton.dev.admin.catalogo.application.category.create.CreateCategoryUseCase;
+import erisnilton.dev.admin.catalogo.application.category.delete.DeleteCategoryUseCase;
 import erisnilton.dev.admin.catalogo.application.category.retrieve.get.CategoryOutput;
 import erisnilton.dev.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;
 import erisnilton.dev.admin.catalogo.application.category.update.UpdateCategoryOutput;
@@ -53,6 +54,9 @@ public class CategoryAPITest {
 
     @MockBean
     private UpdateCategoryUseCase updateCategoryUseCase;
+
+    @MockBean
+    private DeleteCategoryUseCase deleteCategoryUseCase;
 
     @Test
         public void givenAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId() throws Exception {
@@ -311,5 +315,20 @@ public class CategoryAPITest {
                         && Objects.equals(expectedDescription, cmd.description())
                         && Objects.equals(expectedIsActive, cmd.isActive())
         ));
+    }
+    @Test
+    public void givenAValidId_whenCallwsDeleteCategory_shouldBeOK() throws Exception {
+        // given
+        final var expectedId = "123";
+
+        Mockito.doNothing().when(deleteCategoryUseCase).execute(any());
+
+        // when
+        final var request = delete("/categories/{id}" , expectedId);
+        final var response = this.mvc.perform(request).andDo(print());
+
+        // then
+        response.andExpect(status().isNoContent());
+        Mockito.verify(deleteCategoryUseCase, times(1)).execute(Mockito.eq(expectedId));
     }
 }
