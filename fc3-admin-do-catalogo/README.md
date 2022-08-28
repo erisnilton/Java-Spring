@@ -14,6 +14,7 @@ O objetivo principal da __fc3-admin-do-catalogo__ é desenvolver uma API de gere
 - Test Driven Development (TDD);
 - Implentação de logs para registrar as execuções de operações importantes;
 - Implentação de container com Docker;
+- Implentação da documentação da API com Swagger;
 - Auditoria básica para manter melhor controle sobre a criação de entidades (Obs: como não há mecânismos de autencicação/autorização neste projeto, a auditoria resumiu-se apenas em controlar data e hora de criação e atualização das entidades do sistema).
 
 ### Tarefas
@@ -23,6 +24,9 @@ O objetivo principal da __fc3-admin-do-catalogo__ é desenvolver uma API de gere
 - [X] Implentação da camada de Infraestrura
 - [X] Configuração do Banco de Dados
 - [X] Migração com Flayway
+- [X] Container com Docker e Docker compose
+- [X] Documentação com Swagger
+
 
 
 ### Features
@@ -57,3 +61,4 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [MySQL](https://www.mysql.com/)
 - [Flayway](https://flywaydb.org/)
 - [Docker](https://www.docker.com/)
+- [Swagger](https://swagger.io/)
