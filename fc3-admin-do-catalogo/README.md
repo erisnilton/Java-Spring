@@ -13,6 +13,7 @@ O objetivo principal da __fc3-admin-do-catalogo__ é desenvolver uma API de gere
 - Domain Driven Development (DDD);
 - Test Driven Development (TDD);
 - Implentação de logs para registrar as execuções de operações importantes;
+- Implentação de container com Docker;
 - Auditoria básica para manter melhor controle sobre a criação de entidades (Obs: como não há mecânismos de autencicação/autorização neste projeto, a auditoria resumiu-se apenas em controlar data e hora de criação e atualização das entidades do sistema).
 
 ### Tarefas
@@ -55,3 +56,4 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [MySQL](https://www.mysql.com/)
 - [Flayway](https://flywaydb.org/)
+- [Docker](https://www.docker.com/)
