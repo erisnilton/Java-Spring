@@ -12,16 +12,16 @@ O objetivo principal da __fc3-admin-do-catalogo__ é desenvolver uma API de gere
 - Pequenas melhorias durante a refatoração de código;
 - Domain Driven Development (DDD);
 - Test Driven Development (TDD);
-- Implentação de logs para registrar as execuções de operações importantes;
-- Implentação de container com Docker;
-- Implentação da documentação da API com Swagger;
+- Implementação de logs para registrar as execuções de operações importantes;
+- Implementação de container com Docker;
+- Implementação da documentação da API com Swagger;
 - Auditoria básica para manter melhor controle sobre a criação de entidades (Obs: como não há mecânismos de autencicação/autorização neste projeto, a auditoria resumiu-se apenas em controlar data e hora de criação e atualização das entidades do sistema).
 
 ### Tarefas
 - [X] Organização da arquiterura
-- [X] Implentação da camada de domanio
-- [X] Implentação da camada de Aplicação
-- [X] Implentação da camada de Infraestrura
+- [X] Implementação da camada de domanio
+- [X] Implementação da camada de Aplicação
+- [X] Implementação da camada de Infraestrura
 - [X] Configuração do Banco de Dados
 - [X] Migração com Flayway
 - [X] Container com Docker e Docker compose
