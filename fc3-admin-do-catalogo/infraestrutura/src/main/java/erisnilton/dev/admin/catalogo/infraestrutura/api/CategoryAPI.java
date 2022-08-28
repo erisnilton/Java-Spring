@@ -1,9 +1,10 @@
 package erisnilton.dev.admin.catalogo.infraestrutura.api;
 
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
-import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryApiOutput;
-import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CreateCategoryApiInput;
-import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCategoryApiInput;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryApiResponse;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryListResponse;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CreateCategoryResquest;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCategoryRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -12,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RequestMapping(value = "categories")
 @Tag(name = "Categories")
@@ -25,7 +24,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422", description = "Unprocessable error"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    ResponseEntity<?> createCategory(@RequestBody CreateCategoryApiInput input);
+    ResponseEntity<?> createCategory(@RequestBody CreateCategoryResquest input);
 
     @GetMapping
     @Operation(summary = "List all categories paginated")
@@ -34,7 +33,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422", description = "A invalid parameter was received"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    Pagination<?> listCategories(
+    Pagination<CategoryListResponse> listCategories(
             @RequestParam(name = "search", required = false, defaultValue = " ") final String search,
             @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
             @RequestParam(name = "perPage", required = false, defaultValue = "10") final int perPage,
@@ -52,7 +51,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404", description = "Category was not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    CategoryApiOutput getById(@PathVariable(name = "id") String id);
+    CategoryApiResponse getById(@PathVariable(name = "id") String id);
 
     @PutMapping(
             value = "{id}",
@@ -64,7 +63,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404", description = "Category was not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    ResponseEntity<?> updateById(@PathVariable(name = "id") String id, @RequestBody UpdateCategoryApiInput input);
+    ResponseEntity<?> updateById(@PathVariable(name = "id") String id, @RequestBody UpdateCategoryRequest input);
 
     @DeleteMapping(
             value = "{id}",
