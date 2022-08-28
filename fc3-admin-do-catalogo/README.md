@@ -1,6 +1,6 @@
 # Sobre o Projeto
 
-O objetivo principal da fc3-admin-do-catalogo é desenvolver uma API de gerenciamento de catalogo de videos durante o  treinamento oferecido pela [Full Cycle](https://imersao.fullcycle.com.br/page/lancamento/).
+O objetivo principal da __fc3-admin-do-catalogo__ é desenvolver uma API de gerenciamento de catalogo de videos durante o  treinamento oferecido pela [Full Cycle](https://imersao.fullcycle.com.br/page/lancamento/).
 
 ### Desafio: 
 - Desenvolver, junto com experts, uma API Restfull com Java e Springboot.
