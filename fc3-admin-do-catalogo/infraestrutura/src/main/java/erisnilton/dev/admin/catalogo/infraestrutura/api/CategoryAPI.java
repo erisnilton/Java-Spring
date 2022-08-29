@@ -1,7 +1,7 @@
 package erisnilton.dev.admin.catalogo.infraestrutura.api;
 
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
-import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryApiResponse;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryListResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CreateCategoryResquest;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCategoryRequest;
@@ -51,7 +51,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404", description = "Category was not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    CategoryApiResponse getById(@PathVariable(name = "id") String id);
+    CategoryResponse getById(@PathVariable(name = "id") String id);
 
     @PutMapping(
             value = "{id}",

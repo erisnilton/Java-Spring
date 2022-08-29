@@ -2,13 +2,13 @@ package erisnilton.dev.admin.catalogo.infraestrutura.category.presenters;
 
 import erisnilton.dev.admin.catalogo.application.category.retrieve.get.CategoryOutput;
 import erisnilton.dev.admin.catalogo.application.category.retrieve.list.CategoryListOutput;
-import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryApiResponse;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryListResponse;
 
 public interface CategoryApiPresenters {
 
-    static CategoryApiResponse present(final CategoryOutput output) {
-        return new CategoryApiResponse(
+    static CategoryResponse present(final CategoryOutput output) {
+        return new CategoryResponse(
                 output.id().getValue(),
                 output.name(),
                 output.description(),

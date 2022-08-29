@@ -13,7 +13,7 @@ import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
 import erisnilton.dev.admin.catalogo.infraestrutura.api.CategoryAPI;
-import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryApiResponse;
+import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryListResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CreateCategoryResquest;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCategoryRequest;
@@ -78,7 +78,7 @@ public class CategoryController implements CategoryAPI {
     }
 
     @Override
-    public CategoryApiResponse getById(final String id) {
+    public CategoryResponse getById(final String id) {
         return CategoryApiPresenters.present(this.getCategoryByIdUseCase.execute(id));
     }
 
