@@ -17,5 +17,5 @@ import java.lang.annotation.*;
         @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MySQLGateway]")
 })
 @DataJpaTest
-@ExtendWith(CleanUpExtension.class)
+@ExtendWith(MySQLCleanUpExtension.class)
 public @interface MySQLGatewayTest {}

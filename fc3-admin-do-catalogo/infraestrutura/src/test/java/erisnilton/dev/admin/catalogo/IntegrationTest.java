@@ -2,10 +2,7 @@ package erisnilton.dev.admin.catalogo;
 
 import erisnilton.dev.admin.catalogo.infraestrutura.configuration.WebServerConfig;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.*;
@@ -15,5 +12,5 @@ import java.lang.annotation.*;
 @Inherited
 @ActiveProfiles("test")
 @SpringBootTest(classes = WebServerConfig.class)
-@ExtendWith(CleanUpExtension.class)
+@ExtendWith(MySQLCleanUpExtension.class)
 public @interface IntegrationTest {}
