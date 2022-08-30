@@ -32,27 +32,27 @@ repositories {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
-
-    implementation 'io.vavr:vavr:0.10.4'
-
-
     implementation('org.springframework.boot:spring-boot-starter-web') {
         exclude module: 'spring-boot-starter-tomcat'
     }
-    implementation('org.springframework.boot:spring-boot-starter-undertow')
 
+    implementation 'io.vavr:vavr:0.10.4'
+    implementation('org.springframework.boot:spring-boot-starter-undertow')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
-
     implementation('mysql:mysql-connector-java')
-
     implementation('org.springdoc:springdoc-openapi-webmvc-core:1.6.6')
     implementation('org.springdoc:springdoc-openapi-ui:1.6.6')
+
+    testRuntimeOnly('com.h2database:h2')
 
     testImplementation('org.flywaydb:flyway-core')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    testRuntimeOnly("com.h2database:h2")
+    testImplementation('org.testcontainers:testcontainers:1.17.3')
+    testImplementation('org.testcontainers:junit-jupiter:1.17.3')
+    testImplementation('org.testcontainers:mysql:1.17.3')
+
 }
 
 flyway {
