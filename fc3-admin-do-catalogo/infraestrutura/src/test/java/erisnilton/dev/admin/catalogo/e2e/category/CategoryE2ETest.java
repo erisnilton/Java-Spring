@@ -149,6 +149,44 @@ public class CategoryE2ETest {
                 .andExpect(jsonPath("$.items[2].name", equalTo("Documentarios")));
     }
 
+    @Test
+    public void asACatalogAdminIShouldBeAbleToRetrieveCategoryByItsIdentifier() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
+
+        final var actualId  = givenACategory(expectedName, expectedDescription, expectedIsActive);
+
+        final var actualCategory = this.categoryRepository.findById(actualId.getValue()).get();
+
+        Assertions.assertEquals(expectedName, actualCategory.getName());
+        Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
+        Assertions.assertNotNull(actualCategory.getCreatedAt());
+        Assertions.assertNotNull(actualCategory.getUpdatedAt());
+        Assertions.assertNull(actualCategory.getDeletedAt());
+
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToSeeATreatedByGettingANotFoundCategory() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        final var aRequest = get("/categories/123")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        this.mvc.perform(aRequest)
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", equalTo("Category with ID 123 was not found")));
+
+
+    }
+
     private ResultActions listCategories(final int page, final int perPage, final String search) throws Exception {
         return listCategories(page, perPage, search, "", "");
     }
