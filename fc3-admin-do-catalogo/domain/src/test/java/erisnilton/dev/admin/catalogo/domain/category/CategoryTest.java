@@ -85,7 +85,16 @@ public class CategoryTest {
     @Test
     public void giveanInValidNameLengthMoreThan255_whenCallANewCategoryAndValidate_thenShouldReciveError() {
 
-        final String expectedName = "Todas estas questões, devidamente ponderadas, levantam dúvidas sobre se o julgamento imparcial das eventualidades garante a contribuição de um grupo importante na determinação das novas proposições. É importante questionar o quanto a hegemonia do ambiente político cumpre um papel essencial na formulação das direções preferenciais no sentido do progresso. O incentivo ao avanço tecnológico, assim como o acompanhamento das preferências de consumo afeta positivamente a correta previsão do sistema de formação de quadros que corresponde às necessidades.";
+        final var expectedName = """
+                
+                Todas estas questões, devidamente ponderadas, levantam dúvidas sobre se o julgamento imparcial das 
+                eventualidades garante a contribuição de um grupo importante na determinação das novas proposições. 
+                É importante questionar o quanto a hegemonia do ambiente político cumpre um papel essencial na 
+                formulação das direções preferenciais no sentido do progresso.O incentivo ao avanço tecnológico, assim 
+                como o acompanhamento das preferências de consumo afeta positivamente a correta previsão do sistema de 
+                formação de quadros que corresponde às necessidades.";
+                                
+                """;
         final var expectedErrorCounter = 1;
         final var expectedErrorMessage = "'name' must be between 3 and 255 character";
         final var expectedDescription = "A categoria mais assistida";
