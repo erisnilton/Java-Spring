@@ -63,7 +63,7 @@ public class UpdateCategoryUseCaseIT {
         Assertions.assertEquals(expectedName, actualCategory.getName());
         Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
         Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
-        Assertions.assertEquals(aCategory.getCreatedAt().toEpochMilli(), actualCategory.getCreatedAt().toEpochMilli());
+        Assertions.assertEquals(aCategory.getCreatedAt(), actualCategory.getCreatedAt());
         Assertions.assertTrue(aCategory.getUpdatedAt().isBefore(actualCategory.getUpdatedAt()));
         Assertions.assertNull(actualCategory.getDeletedAt());
     }
@@ -122,7 +122,7 @@ public class UpdateCategoryUseCaseIT {
         Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
         Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
 
-        Assertions.assertEquals(aCategory.getCreatedAt().toEpochMilli(), actualCategory.getCreatedAt().toEpochMilli());
+        Assertions.assertEquals(aCategory.getCreatedAt(), actualCategory.getCreatedAt());
         Assertions.assertTrue(aCategory.getUpdatedAt().isBefore(actualCategory.getUpdatedAt()));
         Assertions.assertNotNull(actualCategory.getDeletedAt());
     }
@@ -158,8 +158,8 @@ public class UpdateCategoryUseCaseIT {
         Assertions.assertEquals(aCategory.getDescription(), actualCategory.getDescription());
         Assertions.assertEquals(aCategory.isActive(), actualCategory.isActive());
 
-        Assertions.assertEquals(aCategory.getCreatedAt().toEpochMilli(), actualCategory.getCreatedAt().toEpochMilli());
-        Assertions.assertEquals(aCategory.getUpdatedAt().toEpochMilli(), actualCategory.getUpdatedAt().toEpochMilli());
+        Assertions.assertEquals(aCategory.getCreatedAt(), actualCategory.getCreatedAt());
+        Assertions.assertEquals(aCategory.getUpdatedAt(), actualCategory.getUpdatedAt());
         Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
