@@ -83,6 +83,21 @@ public class Genre extends AggregateRoot<GenreID> {
         new GenreValidator(this, aHandler).validate();
     }
 
+    public Genre activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = Instant.now();
+        return this;
+    }
+    public Genre deactivate() {
+        if(getDeletedAt() == null) {
+            this.deletedAt = Instant.now();
+        }
+        this.active = false;
+        this.updatedAt = Instant.now();
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -106,5 +121,6 @@ public class Genre extends AggregateRoot<GenreID> {
     public Instant getDeletedAt() {
         return deletedAt;
     }
+
 
 }
