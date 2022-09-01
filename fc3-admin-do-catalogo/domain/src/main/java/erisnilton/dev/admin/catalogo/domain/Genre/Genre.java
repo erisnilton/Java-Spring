@@ -85,8 +85,9 @@ public class Genre extends AggregateRoot<GenreID> {
         this.updatedAt = InstantUtils.now();
         return this;
     }
+
     public Genre deactivate() {
-        if(getDeletedAt() == null) {
+        if (getDeletedAt() == null) {
             this.deletedAt = InstantUtils.now();
         }
         this.active = false;
@@ -95,14 +96,14 @@ public class Genre extends AggregateRoot<GenreID> {
     }
 
     public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories) {
-        if(isActive) {
+        if (isActive) {
             activate();
         } else {
             deactivate();
         }
 
         this.name = aName;
-        this.categories = new ArrayList<>(categories);
+        this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
         this.updatedAt = InstantUtils.now();
 
         selfValidate();
@@ -137,9 +138,29 @@ public class Genre extends AggregateRoot<GenreID> {
         final var notification = Notification.create();
         validate(notification);
 
-        if(notification.hasErrror()) {
+        if (notification.hasErrror()) {
             throw new NotificationExeption("Failed to create a aggregate Genre", notification);
         }
     }
 
+    public Genre addCategory(final CategoryID aCategoryID) {
+
+        if (aCategoryID == null) {
+            return this;
+        }
+
+        this.categories.add(aCategoryID);
+        this.updatedAt = InstantUtils.now();
+
+        return this;
+    }
+
+    public Genre RemoveCategory(final CategoryID aCategoryID) {
+        if (aCategoryID == null) {
+            return this;
+        }
+        this.categories.remove(aCategoryID);
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
 }
