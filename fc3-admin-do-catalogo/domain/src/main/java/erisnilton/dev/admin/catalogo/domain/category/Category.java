@@ -103,7 +103,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
         }
         this.name = aName;
         this.description = aDescription;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
