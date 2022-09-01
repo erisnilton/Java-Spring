@@ -9,7 +9,7 @@ import erisnilton.dev.admin.catalogo.application.category.retrieve.list.ListCate
 import erisnilton.dev.admin.catalogo.application.category.update.UpdateCategoryCommand;
 import erisnilton.dev.admin.catalogo.application.category.update.UpdateCategoryOutput;
 import erisnilton.dev.admin.catalogo.application.category.update.UpdateCategoryUseCase;
-import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
+import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
 import erisnilton.dev.admin.catalogo.infraestrutura.api.CategoryAPI;
@@ -72,7 +72,7 @@ public class CategoryController implements CategoryAPI {
             final String dir
     ) {
         return this.listCategoriesUseCase.execute(
-                new CategorySearchQuery(page,perPage,search, sort,dir))
+                new SearchQuery(page,perPage,search, sort,dir))
                 .map(CategoryApiPresenters::present);
 
     }

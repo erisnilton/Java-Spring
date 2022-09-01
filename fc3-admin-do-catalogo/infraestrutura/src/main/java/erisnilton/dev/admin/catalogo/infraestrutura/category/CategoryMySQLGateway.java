@@ -3,7 +3,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.category;
 import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
-import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
+import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryJpaEntity;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
@@ -12,10 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.Optional;
 
 import static erisnilton.dev.admin.catalogo.infraestrutura.utils.SpeficicationUtils.*;
@@ -57,7 +53,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
     }
 
     @Override
-    public Pagination<Category> findAll(CategorySearchQuery aQuery) {
+    public Pagination<Category> findAll(SearchQuery aQuery) {
 
         // Paginação
         final var page = PageRequest.of(

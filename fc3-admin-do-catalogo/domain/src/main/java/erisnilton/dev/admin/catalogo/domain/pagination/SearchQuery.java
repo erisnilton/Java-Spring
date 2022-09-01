@@ -1,6 +1,6 @@
-package erisnilton.dev.admin.catalogo.domain.category;
+package erisnilton.dev.admin.catalogo.domain.pagination;
 
-public record CategorySearchQuery(
+public record SearchQuery(
         int page,
         int perPage,
         String terms,

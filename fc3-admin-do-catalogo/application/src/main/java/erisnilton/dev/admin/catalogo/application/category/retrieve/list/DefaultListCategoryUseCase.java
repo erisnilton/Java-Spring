@@ -1,7 +1,7 @@
 package erisnilton.dev.admin.catalogo.application.category.retrieve.list;
 
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
-import erisnilton.dev.admin.catalogo.domain.category.CategorySearchQuery;
+import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 
 import java.util.Objects;
@@ -15,7 +15,7 @@ public class DefaultListCategoryUseCase extends ListCategoriesUseCase{
     }
 
     @Override
-    public Pagination<CategoryListOutput> execute(CategorySearchQuery aQuery) {
+    public Pagination<CategoryListOutput> execute(SearchQuery aQuery) {
         return this.categoryGateway.findAll(aQuery)
                 .map(CategoryListOutput::from);
     }
