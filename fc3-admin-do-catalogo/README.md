@@ -38,7 +38,7 @@ O objetivo principal da __fc3-admin-do-catalogo__ é desenvolver uma API de gere
 - [X] Teste de integração usecases categorias
 - [X] API de categoria
 - [X] Teste e2e de categoria
-- [ ] Entidade de genre
+- [X] Entidade de genre
 - [ ] Usecases de genre
 - [ ] Infraestrura de genre
 - [ ] Teste de integração usecases genre
