@@ -4,7 +4,7 @@ import erisnilton.dev.admin.catalogo.domain.Genre.Genre;
 import erisnilton.dev.admin.catalogo.domain.Genre.GenreGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
-import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationExeption;
+import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationException;
 import erisnilton.dev.admin.catalogo.domain.validation.Error;
 import erisnilton.dev.admin.catalogo.domain.validation.ValidationHandler;
 import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
@@ -38,8 +38,9 @@ public class DefaultCreateGenreUseCase extends CreateGenreUseCase {
         final var aGenre = notification.validate(() -> Genre.newGenre(aName, isActive));
 
         if(notification.hasErrror()) {
-            throw new NotificationExeption("Could not create Aggregate Genre", notification);
+            throw new NotificationException("Could not create Aggregate Genre", notification);
         }
+        aGenre.addCategories(categories);
         return CreateGenreOutput.from(this.genreGateway.create(aGenre));
     }
 

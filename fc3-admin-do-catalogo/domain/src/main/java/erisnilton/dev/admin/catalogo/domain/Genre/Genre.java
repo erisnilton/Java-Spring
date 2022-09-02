@@ -2,7 +2,7 @@ package erisnilton.dev.admin.catalogo.domain.Genre;
 
 import erisnilton.dev.admin.catalogo.domain.AggregateRoot;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
-import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationExeption;
+import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationException;
 import erisnilton.dev.admin.catalogo.domain.utils.InstantUtils;
 import erisnilton.dev.admin.catalogo.domain.validation.ValidationHandler;
 import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
@@ -139,7 +139,7 @@ public class Genre extends AggregateRoot<GenreID> {
         validate(notification);
 
         if (notification.hasErrror()) {
-            throw new NotificationExeption("Failed to create a aggregate Genre", notification);
+            throw new NotificationException("Failed to create a aggregate Genre", notification);
         }
     }
 
@@ -150,6 +150,18 @@ public class Genre extends AggregateRoot<GenreID> {
         }
 
         this.categories.add(aCategoryID);
+        this.updatedAt = InstantUtils.now();
+
+        return this;
+    }
+
+    public Genre addCategories(final List<CategoryID> categories) {
+
+        if (categories == null || categories.isEmpty()) {
+            return this;
+        }
+
+        this.categories.addAll(categories);
         this.updatedAt = InstantUtils.now();
 
         return this;
