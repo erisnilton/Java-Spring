@@ -1,5 +1,6 @@
 package erisnilton.dev.admin.catalogo.application.genre.update;
 
+import erisnilton.dev.admin.catalogo.application.UseCaseTest;
 import erisnilton.dev.admin.catalogo.domain.Genre.Genre;
 import erisnilton.dev.admin.catalogo.domain.Genre.GenreGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
@@ -7,11 +8,9 @@ import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +19,7 @@ import java.util.Optional;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class UpdateGenreUseCaseTest {
+public class UpdateGenreUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultUpdateGenreUseCase useCase;
@@ -31,6 +29,12 @@ public class UpdateGenreUseCaseTest {
 
     @Mock
     private CategoryGateway categoryGateway;
+
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway, genreGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() {
@@ -209,7 +213,7 @@ public class UpdateGenreUseCaseTest {
         final var expectedId = aGenre.getId();
         final String expectedName = null;
         final var expectedIsActive = true;
-        final var expectedCategories = List.of( filmes, series, documentarios );
+        final var expectedCategories = List.of(filmes, series, documentarios);
         final var expectedErrorCount = 2;
         final var expectedErrorMessageOne = "Some categories could not be found: 456, 789";
         final var expectedErrorMessageTwo = "'name' should not be null";

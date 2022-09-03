@@ -1,16 +1,15 @@
 package erisnilton.dev.admin.catalogo.application.genre.create;
 
+import erisnilton.dev.admin.catalogo.application.UseCaseTest;
 import erisnilton.dev.admin.catalogo.domain.Genre.GenreGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryGateway;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,8 +17,7 @@ import java.util.Objects;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class CreateGenreUseCaseTest {
+public class CreateGenreUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultCreateGenreUseCase useCase;
@@ -29,6 +27,11 @@ public class CreateGenreUseCaseTest {
 
     @Mock
     private CategoryGateway categoryGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway, genreGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsCreateGenre_shouldReturnGenreId() {
@@ -91,6 +94,7 @@ public class CreateGenreUseCaseTest {
                         && Objects.nonNull(aGenre.getDeletedAt())
         ));
     }
+
     @Test
     public void givenAValidCommandWithCategories_whenCallsCreateGenre_shouldReturnGenreId() {
         // given
@@ -194,7 +198,7 @@ public class CreateGenreUseCaseTest {
         final var documentarios = CategoryID.from("780");
         final var expectedName = "Ação";
         final var expectedIsActive = true;
-        final var expectedCategories = List.of( filmes, series, documentarios );
+        final var expectedCategories = List.of(filmes, series, documentarios);
 
         final var expectedErrorMessage = "Some categories could not be found: 456, 780";
         final var expectedErrorCount = 1;
@@ -227,7 +231,7 @@ public class CreateGenreUseCaseTest {
         final var documentarios = CategoryID.from("780");
         final var expectedName = " ";
         final var expectedIsActive = true;
-        final var expectedCategories = List.of( filmes, series, documentarios );
+        final var expectedCategories = List.of(filmes, series, documentarios);
 
         final var expectedErrorMessageOne = "Some categories could not be found: 456, 780";
         final var expectedErrorMessageTwo = "'name' should not be empty";
