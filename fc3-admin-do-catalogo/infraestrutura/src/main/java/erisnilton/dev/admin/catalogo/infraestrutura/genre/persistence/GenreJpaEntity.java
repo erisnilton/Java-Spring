@@ -7,6 +7,7 @@ import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.*;
@@ -16,6 +17,7 @@ import static javax.persistence.FetchType.*;
 @Table(name = "genres")
 public class GenreJpaEntity {
 
+    @Id
     @Column(name = "id", nullable = false)
     private String id;
 
@@ -78,10 +80,7 @@ public class GenreJpaEntity {
                 GenreID.from(getId()),
                 getName(),
                 isActive(),
-                getCategories()
-                        .stream()
-                        .map(it -> CategoryID.from(it.getId().getCategoryId()))
-                        .toList(),
+                getCategoriesIDs(),
                 getCreatedAt(),
                 getUpdatedAt(),
                 getDeletedAt()
@@ -94,6 +93,13 @@ public class GenreJpaEntity {
 
     private void removeCategory(final CategoryID anId) {
         this.categories.remove(GenreCategoryJpaEntity.from(anId, this));
+    }
+
+    public List<CategoryID> getCategoriesIDs() {
+        return getCategories()
+                .stream()
+                .map(it -> CategoryID.from(it.getId().getCategoryId()))
+                .toList();
     }
 
 

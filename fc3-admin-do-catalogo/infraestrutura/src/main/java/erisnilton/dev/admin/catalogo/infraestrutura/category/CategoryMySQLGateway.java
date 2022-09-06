@@ -10,6 +10,7 @@ import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.Categor
 import erisnilton.dev.admin.catalogo.infraestrutura.utils.SpeficicationUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -20,7 +21,7 @@ import static erisnilton.dev.admin.catalogo.infraestrutura.utils.SpeficicationUt
 import static org.springframework.data.domain.Sort.Direction;
 import static org.springframework.data.domain.Sort.by;
 
-@Service
+@Component
 public class CategoryMySQLGateway implements CategoryGateway {
 
     private CategoryRepository repository;
