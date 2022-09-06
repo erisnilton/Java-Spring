@@ -2,6 +2,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.genre;
 
 import erisnilton.dev.admin.catalogo.MySQLGatewayTest;
 import erisnilton.dev.admin.catalogo.domain.Genre.Genre;
+import erisnilton.dev.admin.catalogo.domain.Genre.GenreID;
 import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.CategoryMySQLGateway;
@@ -11,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Comparator;
 import java.util.List;
 
 @MySQLGatewayTest
 public class GenreMySQLGatewayTest {
-
     @Autowired
     private CategoryMySQLGateway categoryGateway;
-
     @Autowired
     private GenreMySQLGateway genreGateway;
-
     @Autowired
     private GenreRepository genreRepository;
-
     @Test
     public void testDependenciesInjected() {
 
@@ -145,7 +143,7 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(expectedId, actualGenre.getId());
         Assertions.assertEquals(expectedName, actualGenre.getName());
         Assertions.assertEquals(expectedIsActice, actualGenre.isActive());
-        Assertions.assertEquals(expectedCategories, actualGenre.getCategories());
+        Assertions.assertEquals(sorted(expectedCategories), sorted(actualGenre.getCategories()));
         Assertions.assertEquals(aGenre.getCreatedAt(), actualGenre.getCreatedAt());
         Assertions.assertTrue(aGenre.getUpdatedAt().isBefore(actualGenre.getUpdatedAt()));
         Assertions.assertEquals(aGenre.getDeletedAt(), actualGenre.getDeletedAt());
@@ -154,7 +152,7 @@ public class GenreMySQLGatewayTest {
 
         Assertions.assertEquals(expectedName, persistedGenre.getName());
         Assertions.assertEquals(expectedIsActice, persistedGenre.isActive());
-        Assertions.assertEquals(expectedCategories, persistedGenre.getCategoriesIDs());
+        Assertions.assertEquals(sorted(expectedCategories), sorted(persistedGenre.getCategoriesIDs()));
         Assertions.assertEquals(aGenre.getCreatedAt(), persistedGenre.getCreatedAt());
         Assertions.assertTrue(aGenre.getUpdatedAt().isBefore(persistedGenre.getUpdatedAt()));
         Assertions.assertEquals(aGenre.getDeletedAt(), persistedGenre.getDeletedAt());
@@ -194,7 +192,7 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(expectedId, actualGenre.getId());
         Assertions.assertEquals(expectedName, actualGenre.getName());
         Assertions.assertEquals(expectedIsActice, actualGenre.isActive());
-        Assertions.assertEquals(expectedCategories, actualGenre.getCategories());
+        Assertions.assertEquals(sorted(expectedCategories), sorted(expectedCategories));
         Assertions.assertEquals(aGenre.getCreatedAt(), actualGenre.getCreatedAt());
         Assertions.assertTrue(aGenre.getUpdatedAt().isBefore(actualGenre.getUpdatedAt()));
         Assertions.assertEquals(aGenre.getDeletedAt(), actualGenre.getDeletedAt());
@@ -289,5 +287,35 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(aGenre.getCreatedAt(), persistedGenre.getCreatedAt());
         Assertions.assertTrue(aGenre.getUpdatedAt().isBefore(persistedGenre.getUpdatedAt()));
         Assertions.assertNotNull(persistedGenre.getDeletedAt());
+    }
+
+    @Test
+    public void givenAPrePersistedGenre_whenCallsDeleteById_shouldDeleteGenre() {
+        final var aGenre = Genre.newGenre("Ação", true);
+
+        genreRepository.saveAndFlush(GenreJpaEntity.from(aGenre));
+
+        Assertions.assertEquals(1, genreRepository.count());
+
+        genreGateway.deleteById(aGenre.getId());
+        Assertions.assertEquals(0, genreRepository.count());
+
+    }
+
+    @Test
+    public void givenAnInvalidGenre_whenCallsDeleteById_shouldReturnOK() {
+
+        Assertions.assertEquals(0, genreRepository.count());
+
+        genreGateway.deleteById(GenreID.from("123"));
+
+        Assertions.assertEquals(0, genreRepository.count());
+
+    }
+
+    private List<CategoryID> sorted(final List<CategoryID> ids){
+        return ids.stream()
+                .sorted( Comparator.comparing(CategoryID::getValue))
+                .toList();
     }
 }
