@@ -23,6 +23,7 @@ public class GenreMySQLGatewayTest {
     private GenreMySQLGateway genreGateway;
     @Autowired
     private GenreRepository genreRepository;
+
     @Test
     public void testDependenciesInjected() {
 
@@ -71,6 +72,7 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(aGenre.getDeletedAt(), persistedGenre.getDeletedAt());
         Assertions.assertNull(persistedGenre.getDeletedAt());
     }
+
     @Test
     public void givenAValidGenreWithoutCategories_whenCallsCreateGenre_shouldPersistGenre() {
 
@@ -107,6 +109,7 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(aGenre.getDeletedAt(), persistedGenre.getDeletedAt());
         Assertions.assertNull(persistedGenre.getDeletedAt());
     }
+
     @Test
     public void givenAValidGenreWithoutCategories_whenCallsUpdateGenreWithCategories_shouldPersistGenre() {
         final var filmes = categoryGateway.create(
@@ -158,6 +161,7 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(aGenre.getDeletedAt(), persistedGenre.getDeletedAt());
         Assertions.assertNull(persistedGenre.getDeletedAt());
     }
+
     @Test
     public void givenAValidGenreWithCategories_whenCallsUpdateGenreCleaningCategories_shouldPersistGenre() {
         final var filmes = categoryGateway.create(
@@ -207,6 +211,7 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(aGenre.getDeletedAt(), persistedGenre.getDeletedAt());
         Assertions.assertNull(persistedGenre.getDeletedAt());
     }
+
     @Test
     public void givenAValidGenreInactive_whenCallsUpdateGenreActivating_shouldPersistGenre() {
 
@@ -248,6 +253,7 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(actualGenre.getDeletedAt(), persistedGenre.getDeletedAt());
         Assertions.assertNull(persistedGenre.getDeletedAt());
     }
+
     @Test
     public void givenAValidGenreActive_whenCallsUpdateGenreInactivating_shouldPersistGenre() {
 
@@ -313,9 +319,67 @@ public class GenreMySQLGatewayTest {
 
     }
 
-    private List<CategoryID> sorted(final List<CategoryID> ids){
+    @Test
+    public void givenAPrePersistedGenre_whenCallsFindById_shouldReturnGenre() {
+        // given
+        final var filmes = categoryGateway.create(
+                Category.newCategory("Filmes", null, true)
+        );
+
+        final var series = categoryGateway.create(
+                Category.newCategory("Series", null, true)
+        );
+
+        final var expectedActive = true;
+        final var expectedName = "Ação";
+        final var expectedCategories = List.of(filmes.getId(), series.getId());
+
+        final var aGenre = Genre.newGenre(expectedName, expectedActive);
+
+        final var expectedId = aGenre.getId();
+
+        Assertions.assertEquals(0, genreRepository.count());
+        aGenre.addCategories(expectedCategories);
+
+        genreRepository.saveAndFlush(GenreJpaEntity.from(aGenre));
+
+        Assertions.assertEquals(1, genreRepository.count());
+
+        // when
+        final var actualGenre = genreGateway.findById(expectedId).get();
+
+        // then
+        Assertions.assertNotNull(actualGenre);
+        Assertions.assertEquals(expectedId, actualGenre.getId());
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertEquals(expectedActive, actualGenre.isActive());
+        Assertions.assertEquals(sorted(expectedCategories), sorted(actualGenre.getCategories()));
+        Assertions.assertEquals(aGenre.getCreatedAt(), actualGenre.getCreatedAt());
+        Assertions.assertEquals(aGenre.getUpdatedAt(), actualGenre.getUpdatedAt());
+        Assertions.assertNull(actualGenre.getDeletedAt());
+
+    }
+
+    @Test
+    public void givenAnInvalidGenreId_whenCallsFindById_shouldReturnEmpty() {
+
+        final var expectedId = GenreID.from("123");
+
+        Assertions.assertEquals(0, genreRepository.count());
+
+        // when
+        final var actualGenre = genreGateway.findById(expectedId);
+
+        // then
+        Assertions.assertTrue(actualGenre.isEmpty());
+    }
+
+
+
+
+    private List<CategoryID> sorted(final List<CategoryID> ids) {
         return ids.stream()
-                .sorted( Comparator.comparing(CategoryID::getValue))
+                .sorted(Comparator.comparing(CategoryID::getValue))
                 .toList();
     }
 }
