@@ -5,7 +5,7 @@ import erisnilton.dev.admin.catalogo.application.category.retrieve.list.Category
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CategoryListResponse;
 
-public interface CategoryApiPresenters {
+public interface    CategoryApiPresenters {
 
     static CategoryResponse present(final CategoryOutput output) {
         return new CategoryResponse(

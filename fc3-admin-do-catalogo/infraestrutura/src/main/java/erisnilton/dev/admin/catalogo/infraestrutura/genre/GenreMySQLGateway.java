@@ -7,10 +7,17 @@ import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.persistence.GenreJpaEntity;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.persistence.GenreRepository;
+import erisnilton.dev.admin.catalogo.infraestrutura.utils.SpeficicationUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 import java.util.Optional;
+
+import static erisnilton.dev.admin.catalogo.infraestrutura.utils.SpeficicationUtils.like;
+import static org.springframework.data.domain.Sort.Direction;
+import static org.springframework.data.domain.Sort.by;
 
 @Component
 public class GenreMySQLGateway implements GenreGateway {
@@ -52,7 +59,28 @@ public class GenreMySQLGateway implements GenreGateway {
     }
 
     @Override
+
     public Pagination<Genre> findAll(final SearchQuery aQuery) {
-        return null;
+        //paginação
+        final var page = PageRequest.of(
+                aQuery.page(),
+                aQuery.perPage(),
+                by(Direction.fromString(aQuery.direction()), aQuery.sort())
+        );
+
+        // Busca dinamica pelo criterio tems (name ou createAt)
+        final var specifications =
+                Optional.ofNullable(aQuery.terms())
+                        .filter(str -> !str.isBlank())
+                        .map(str -> SpeficicationUtils.<GenreJpaEntity>like("name", str))
+                        .orElse(null);
+
+        final var pageResult = this.genreRepository.findAll(Specification.where(specifications), page);
+        return new Pagination<>(
+                pageResult.getNumber(),
+                pageResult.getSize(),
+                pageResult.getTotalElements(),
+                pageResult.map(GenreJpaEntity::toAggregate).toList()
+        );
     }
 }
