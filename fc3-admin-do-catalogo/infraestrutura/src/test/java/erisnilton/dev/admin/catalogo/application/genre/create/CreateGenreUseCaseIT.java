@@ -58,7 +58,6 @@ public class CreateGenreUseCaseIT {
         final var actualGenre = genreRepository.findById(actualOutput.id()).get();
         Assertions.assertEquals(expectedName, actualGenre.getName());
         Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
-        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
         Assertions.assertTrue(
                 expectedCategories.size() == actualGenre.getCategoriesIDs().size()
                         && expectedCategories.containsAll(actualGenre.getCategoriesIDs())
