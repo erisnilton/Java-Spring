@@ -1,5 +1,7 @@
 package erisnilton.dev.admin.catalogo.infraestrutura.api.controllers;
 
+import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreCommand;
+import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.infraestrutura.api.GenreAPI;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.CreateGenreRequest;
@@ -9,12 +11,28 @@ import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.UpdateGenreRequ
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+import java.util.Objects;
+
+import static java.util.Objects.*;
+
 @RestController
 public class GenreController implements GenreAPI {
 
+    private final CreateGenreUseCase createGenreUseCase;
+
+    public GenreController(final CreateGenreUseCase createGenreUseCase) {
+        this.createGenreUseCase = requireNonNull(createGenreUseCase);
+    }
+
     @Override
     public ResponseEntity<?> createGenre(final CreateGenreRequest input) {
-        return null;
+
+        final var aCommand = CreateGenreCommand.with(input.name(), input.isActive(), input.categories());
+
+        final var output =  this.createGenreUseCase.execute(aCommand);
+
+        return ResponseEntity.created(URI.create("/genres/" + output.id())).body(output);
     }
 
     @Override
