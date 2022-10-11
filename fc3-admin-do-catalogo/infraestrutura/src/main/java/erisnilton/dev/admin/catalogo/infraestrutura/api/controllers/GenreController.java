@@ -2,27 +2,34 @@ package erisnilton.dev.admin.catalogo.infraestrutura.api.controllers;
 
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreCommand;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreUseCase;
+import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.infraestrutura.api.GenreAPI;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.CreateGenreRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.GenreListResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.GenreResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.UpdateGenreRequest;
+import erisnilton.dev.admin.catalogo.infraestrutura.genre.presenters.GenreApiPresenters;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.Objects;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 
 @RestController
 public class GenreController implements GenreAPI {
 
     private final CreateGenreUseCase createGenreUseCase;
 
-    public GenreController(final CreateGenreUseCase createGenreUseCase) {
+    private final GetGenreByIdUseCase getGenreByIdUseCase;
+
+    public GenreController(
+            final CreateGenreUseCase createGenreUseCase,
+            final GetGenreByIdUseCase getGenreByIdUseCase
+    ) {
         this.createGenreUseCase = requireNonNull(createGenreUseCase);
+        this.getGenreByIdUseCase = requireNonNull(getGenreByIdUseCase);
     }
 
     @Override
@@ -30,7 +37,7 @@ public class GenreController implements GenreAPI {
 
         final var aCommand = CreateGenreCommand.with(input.name(), input.isActive(), input.categories());
 
-        final var output =  this.createGenreUseCase.execute(aCommand);
+        final var output = this.createGenreUseCase.execute(aCommand);
 
         return ResponseEntity.created(URI.create("/genres/" + output.id())).body(output);
     }
@@ -42,7 +49,7 @@ public class GenreController implements GenreAPI {
 
     @Override
     public GenreResponse getById(final String id) {
-        return null;
+        return GenreApiPresenters.present(this.getGenreByIdUseCase.execute(id));
     }
 
     @Override
