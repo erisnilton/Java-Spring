@@ -26,7 +26,7 @@ public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase {
 
     }
 
-    private static Supplier<NotFoundException> notFound(final CategoryID anId) {
-        return () -> NotFoundException.with( Category.class, anId) ;
-    }
+        private static Supplier<NotFoundException> notFound(final CategoryID anId) {
+            return () -> NotFoundException.with( Category.class, anId) ;
+        }
 }
