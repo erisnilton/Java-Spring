@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import erisnilton.dev.admin.catalogo.ControllerTest;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreOutput;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreUseCase;
+import erisnilton.dev.admin.catalogo.application.genre.delete.DeleteGenreUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GenreOutput;
 import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreOutput;
@@ -49,6 +50,9 @@ public class GenreApiTest {
 
     @MockBean
     private UpdateGenreUseCase updateGenreUseCase;
+
+    @MockBean
+    private DeleteGenreUseCase deleteGenreUseCase;
 
     @Test
     public void givenAValidCommand_whenCallsCreateGenre_shouldReturnGenreId() throws Exception {
@@ -260,6 +264,22 @@ public class GenreApiTest {
                         && Objects.equals(expectedCategories, cmd.categories())
                         && Objects.equals(expectedIsActive, cmd.isActive())
         ));
+    }
+
+    @Test
+    public void givenAValidId_whenCallsDeleteGenre_shouldReturnNoContent() throws Exception {
+
+        final var expectedId = "123";
+
+        doNothing().when(deleteGenreUseCase).execute(any());
+
+        final var aRequest = delete("/genres/{id}", expectedId);
+
+        final var response = this.mvc.perform(aRequest).andDo(print());
+
+        response.andExpect(status().isNoContent());
+
+        verify(deleteGenreUseCase).execute(eq(expectedId));
     }
 
 }

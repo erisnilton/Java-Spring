@@ -2,6 +2,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.api.controllers;
 
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreCommand;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreUseCase;
+import erisnilton.dev.admin.catalogo.application.genre.delete.DeleteGenreUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreCommand;
 import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreUseCase;
@@ -28,14 +29,17 @@ public class GenreController implements GenreAPI {
 
     private final UpdateGenreUseCase updateGenreUseCase;
 
+    private final DeleteGenreUseCase deleteGenreUseCase;
+
     public GenreController(
             final CreateGenreUseCase createGenreUseCase,
             final GetGenreByIdUseCase getGenreByIdUseCase,
-            final UpdateGenreUseCase updateGenreUseCase
-    ) {
+            final UpdateGenreUseCase updateGenreUseCase,
+            final DeleteGenreUseCase deleteGenreUseCase) {
         this.createGenreUseCase = requireNonNull(createGenreUseCase);
         this.getGenreByIdUseCase = requireNonNull(getGenreByIdUseCase);
         this.updateGenreUseCase = requireNonNull(updateGenreUseCase);
+        this.deleteGenreUseCase = requireNonNull(deleteGenreUseCase);
     }
 
     @Override
@@ -70,6 +74,6 @@ public class GenreController implements GenreAPI {
 
     @Override
     public void deleteById(final String id) {
-
+        this.deleteGenreUseCase.execute(id);
     }
 }
