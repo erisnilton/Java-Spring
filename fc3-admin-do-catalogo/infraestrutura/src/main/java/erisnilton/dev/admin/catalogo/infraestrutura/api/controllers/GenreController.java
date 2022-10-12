@@ -3,6 +3,8 @@ package erisnilton.dev.admin.catalogo.infraestrutura.api.controllers;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreCommand;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
+import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreCommand;
+import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.infraestrutura.api.GenreAPI;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.CreateGenreRequest;
@@ -24,12 +26,16 @@ public class GenreController implements GenreAPI {
 
     private final GetGenreByIdUseCase getGenreByIdUseCase;
 
+    private final UpdateGenreUseCase updateGenreUseCase;
+
     public GenreController(
             final CreateGenreUseCase createGenreUseCase,
-            final GetGenreByIdUseCase getGenreByIdUseCase
+            final GetGenreByIdUseCase getGenreByIdUseCase,
+            final UpdateGenreUseCase updateGenreUseCase
     ) {
         this.createGenreUseCase = requireNonNull(createGenreUseCase);
         this.getGenreByIdUseCase = requireNonNull(getGenreByIdUseCase);
+        this.updateGenreUseCase = requireNonNull(updateGenreUseCase);
     }
 
     @Override
@@ -54,7 +60,12 @@ public class GenreController implements GenreAPI {
 
     @Override
     public ResponseEntity<?> updateById(final String id, final UpdateGenreRequest input) {
-        return null;
+
+        final var aCommand =
+                UpdateGenreCommand.with(id, input.name(), input.isActive(), input.categories());
+
+        final var output = this.updateGenreUseCase.execute(aCommand);
+        return ResponseEntity.ok(output);
     }
 
     @Override
