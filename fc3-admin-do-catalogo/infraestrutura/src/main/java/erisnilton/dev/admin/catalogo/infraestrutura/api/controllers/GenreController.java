@@ -4,9 +4,11 @@ import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreCommand
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.delete.DeleteGenreUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
+import erisnilton.dev.admin.catalogo.application.genre.retrieve.list.ListGenresUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreCommand;
 import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
+import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 import erisnilton.dev.admin.catalogo.infraestrutura.api.GenreAPI;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.CreateGenreRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.GenreListResponse;
@@ -31,15 +33,20 @@ public class GenreController implements GenreAPI {
 
     private final DeleteGenreUseCase deleteGenreUseCase;
 
+    private final ListGenresUseCase listGenresUseCase;
+
     public GenreController(
             final CreateGenreUseCase createGenreUseCase,
             final GetGenreByIdUseCase getGenreByIdUseCase,
             final UpdateGenreUseCase updateGenreUseCase,
-            final DeleteGenreUseCase deleteGenreUseCase) {
+            final DeleteGenreUseCase deleteGenreUseCase,
+            final ListGenresUseCase listGenresUseCase)
+    {
         this.createGenreUseCase = requireNonNull(createGenreUseCase);
         this.getGenreByIdUseCase = requireNonNull(getGenreByIdUseCase);
         this.updateGenreUseCase = requireNonNull(updateGenreUseCase);
         this.deleteGenreUseCase = requireNonNull(deleteGenreUseCase);
+        this.listGenresUseCase = requireNonNull(listGenresUseCase);
     }
 
     @Override
@@ -54,7 +61,9 @@ public class GenreController implements GenreAPI {
 
     @Override
     public Pagination<GenreListResponse> listGenres(final String search, final int page, final int perPage, final String sort, final String dir) {
-        return null;
+        return this.listGenresUseCase.execute(
+                new SearchQuery(page, perPage, search, sort, dir)
+                ).map(GenreApiPresenters::present);
     }
 
     @Override

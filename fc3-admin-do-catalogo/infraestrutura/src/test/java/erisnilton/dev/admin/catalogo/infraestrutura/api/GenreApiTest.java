@@ -2,11 +2,14 @@ package erisnilton.dev.admin.catalogo.infraestrutura.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import erisnilton.dev.admin.catalogo.ControllerTest;
+import erisnilton.dev.admin.catalogo.application.category.retrieve.list.CategoryListOutput;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreOutput;
 import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.delete.DeleteGenreUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GenreOutput;
 import erisnilton.dev.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
+import erisnilton.dev.admin.catalogo.application.genre.retrieve.list.GenreListOutput;
+import erisnilton.dev.admin.catalogo.application.genre.retrieve.list.ListGenresUseCase;
 import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreOutput;
 import erisnilton.dev.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import erisnilton.dev.admin.catalogo.domain.Genre.Genre;
@@ -14,6 +17,7 @@ import erisnilton.dev.admin.catalogo.domain.Genre.GenreID;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.exceptions.NotFoundException;
 import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationException;
+import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.CreateGenreRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.UpdateGenreRequest;
@@ -53,6 +57,9 @@ public class GenreApiTest {
 
     @MockBean
     private DeleteGenreUseCase deleteGenreUseCase;
+
+    @MockBean
+    private ListGenresUseCase listGenresUseCase;
 
     @Test
     public void givenAValidCommand_whenCallsCreateGenre_shouldReturnGenreId() throws Exception {
@@ -273,7 +280,8 @@ public class GenreApiTest {
 
         doNothing().when(deleteGenreUseCase).execute(any());
 
-        final var aRequest = delete("/genres/{id}", expectedId);
+        final var aRequest = delete("/genres/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(aRequest).andDo(print());
 
@@ -282,4 +290,63 @@ public class GenreApiTest {
         verify(deleteGenreUseCase).execute(eq(expectedId));
     }
 
+    @Test
+    public void givenAValidParams_whenCallsListGenres_shouldReturnGenres() throws Exception{
+
+        // given
+
+        final var aGenre = Genre.newGenre("Açao", false);
+
+        final var expectedPage = 0;
+        final var expectedPerPage = 10;
+        final var expectedTerms = "ac";
+        final var expectedSort = "name";
+        final var expectedDirection = "asc";
+
+        final var expectedItemsCount = 1;
+        final var expectedTotal = 1;
+
+        final var expectedItems = List.of(GenreListOutput.from(aGenre));
+
+        when(listGenresUseCase.execute(any()))
+                .thenReturn(new Pagination<>(
+                        expectedPage,
+                        expectedPerPage,
+                        expectedTotal,
+                        expectedItems
+                ));
+
+        //when
+
+        final var aResquest = get("/genres")
+                .queryParam("page", String.valueOf(expectedPage))
+                .queryParam("perPage", String.valueOf(expectedPerPage))
+                .queryParam("sort", expectedSort)
+                .queryParam("direction", expectedDirection)
+                .queryParam("search", expectedTerms)
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var response = this.mvc.perform(aResquest);
+
+        // then
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(expectedPage)))
+                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
+                .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
+                .andExpect(jsonPath("$.items[0].id", equalTo(aGenre.getId().getValue())))
+                .andExpect(jsonPath("$.items[0].name", equalTo(aGenre.getName())))
+                .andExpect(jsonPath("$.items[0].is_active", equalTo(aGenre.isActive())))
+                .andExpect(jsonPath("$.items[0].created_at", equalTo(aGenre.getCreatedAt().toString())))
+                .andExpect(jsonPath("$.items[0].deleted_at", equalTo(aGenre.getDeletedAt().toString())));
+
+        verify(listGenresUseCase, times(1)).execute(argThat(query ->
+                Objects.equals(expectedPage, query.page())
+                && Objects.equals(expectedPerPage, query.perPage())
+                && Objects.equals(expectedTerms, query.terms())
+                && Objects.equals(expectedSort, query.sort())
+                && Objects.equals(expectedDirection, query.direction())
+        ));
+    }
 }
