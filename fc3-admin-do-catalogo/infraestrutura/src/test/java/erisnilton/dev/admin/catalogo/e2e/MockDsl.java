@@ -8,6 +8,7 @@ import erisnilton.dev.admin.catalogo.infraestrutura.category.models.CreateCatego
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCategoryRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.configuration.json.Json;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.CreateGenreRequest;
+import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.GenreResponse;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -67,6 +68,12 @@ public interface MockDsl {
         return GenreID.from(actualId);
     }
 
+
+    default GenreResponse retrieveGenre(final Identifier anId) throws Exception {
+
+        return retrieve("/genres/", anId, GenreResponse.class);
+    }
+
     default ResultActions listGenres(final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
 
         return list("/genres", page, perPage, search, sort, direction);
@@ -117,8 +124,8 @@ public interface MockDsl {
 
     private <T> T retrieve(final String url, final Identifier anId, final Class<T> clazz) throws Exception {
         final var aRequest = get(url + anId.getValue())
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
         final var json = this.mvc().perform(aRequest)
                 .andExpect(status().isOk())
                 .andReturn()
