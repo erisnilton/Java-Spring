@@ -79,6 +79,10 @@ public interface MockDsl {
         return update("/genres/", anId, aRequest );
     }
 
+    default ResultActions deleteAGenre(final Identifier anId) throws Exception {
+        return delete("/genres/", anId);
+    }
+
     default ResultActions listGenres(final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
 
         return list("/genres", page, perPage, search, sort, direction);

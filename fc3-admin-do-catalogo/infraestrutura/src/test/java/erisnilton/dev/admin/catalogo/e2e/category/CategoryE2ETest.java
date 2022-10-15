@@ -1,6 +1,8 @@
 package erisnilton.dev.admin.catalogo.e2e.category;
 
 import erisnilton.dev.admin.catalogo.E2ETest;
+import erisnilton.dev.admin.catalogo.domain.Genre.GenreID;
+import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.e2e.MockDsl;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCategoryRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
@@ -285,5 +287,15 @@ public class CategoryE2ETest implements MockDsl {
         deleteACategory(actualId).andExpect(status().isNoContent());
 
         Assertions.assertFalse(this.categoryRepository.existsById(actualId.getValue()));
+    }
+
+    @Test
+    public void asACatalogAdminIShouldNotSeeAErrorByDeletingANotExistentCategory() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        deleteAGenre(CategoryID.from("123")).andExpect(status().isNoContent());
+
+        Assertions.assertEquals(0, categoryRepository.count());
     }
 }
