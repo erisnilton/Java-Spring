@@ -3,6 +3,7 @@ package erisnilton.dev.admin.catalogo.e2e.genre;
 import erisnilton.dev.admin.catalogo.E2ETest;
 import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.e2e.MockDsl;
+import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.UpdateGenreRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.persistence.GenreRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -197,7 +198,7 @@ public class GenreE2ETest implements MockDsl {
         Assertions.assertEquals(expectedName, actualGenre.name());
         Assertions.assertTrue(
                 expectedCategories.size() == actualGenre.categories().size()
-                && (mapTo(expectedCategories, CategoryID::getValue)).containsAll(actualGenre.categories()));
+                        && (mapTo(expectedCategories, CategoryID::getValue)).containsAll(actualGenre.categories()));
         Assertions.assertEquals(expectedIsActive, actualGenre.active());
         Assertions.assertNotNull(actualGenre.createdAt());
         Assertions.assertNotNull(actualGenre.updatedAt());
@@ -217,5 +218,106 @@ public class GenreE2ETest implements MockDsl {
         this.mvc.perform(aRequest)
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", equalTo("Genre with ID 123 was not found")));
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToUpdateGenreByItsIdentifier() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, genreRepository.count());
+
+        final var movies = givenACategory("Movies", null, true);
+
+        final var expectedName = "Ação";
+        final var expectedCategories = List.of(movies);
+        final var expectedIsActive = true;
+
+        final var actualId = givenAGenre("acao", expectedCategories, expectedIsActive);
+
+        final var aRequestBody = new UpdateGenreRequest(
+                expectedName,
+                mapTo(expectedCategories, CategoryID::getValue),
+                expectedIsActive
+        );
+
+        updateAGenre(actualId, aRequestBody).andExpect(status().isOk());
+
+        final var actualGenre = this.genreRepository.findById(actualId.getValue()).get();
+
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertTrue(
+                expectedCategories.size() == actualGenre.getCategoriesIDs().size()
+                        && expectedCategories.containsAll(actualGenre.getCategoriesIDs())
+        );
+        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
+        Assertions.assertNotNull(actualGenre.getCreatedAt());
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
+        Assertions.assertNull(actualGenre.getDeletedAt());
+
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToInactivateGenreByItsIdentifier() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, genreRepository.count());
+
+        final var movies = givenACategory("Movies", null, true);
+
+        final var expectedName = "Ação";
+        final var expectedCategories = List.of(movies);
+        final var expectedIsActive = false;
+
+        final var actualId = givenAGenre(expectedName, expectedCategories, true);
+
+        final var aRequestBody = new UpdateGenreRequest(expectedName,
+                expectedCategories.stream().map(CategoryID::getValue).toList(),
+                expectedIsActive
+        );
+
+        updateAGenre(actualId, aRequestBody).andExpect(status().isOk());
+
+        final var actualGenre = this.genreRepository.findById(actualId.getValue()).get();
+
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertTrue(
+                expectedCategories.size() == actualGenre.getCategoriesIDs().size()
+                        && expectedCategories.containsAll(actualGenre.getCategoriesIDs())
+        );
+        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
+        Assertions.assertNotNull(actualGenre.getCreatedAt());
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToActiveteGenreByItsIdentifier() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, genreRepository.count());
+
+        final var filmes = givenACategory("filmes", null, true);
+
+        final var expectedName = "Ação";
+        final var expectedCategories = List.of(filmes);
+        final var expectedIsActive = true;
+
+        final var actualId = givenAGenre(expectedName, expectedCategories, false);
+
+        final var aRequestBody = new UpdateGenreRequest(
+                expectedName,
+                expectedCategories.stream().map(CategoryID::getValue).toList(),
+                expectedIsActive
+        );
+
+        updateAGenre(actualId, aRequestBody).andExpect(status().isOk());
+
+        final var actualGenre = this.genreRepository.findById(actualId.getValue()).get();
+
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertTrue(expectedCategories.size() == actualGenre.getCategoriesIDs().size()
+                && expectedCategories.containsAll(actualGenre.getCategoriesIDs()));
+        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
+        Assertions.assertNotNull(actualGenre.getCreatedAt());
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
+        Assertions.assertNull(actualGenre.getDeletedAt());
     }
 }

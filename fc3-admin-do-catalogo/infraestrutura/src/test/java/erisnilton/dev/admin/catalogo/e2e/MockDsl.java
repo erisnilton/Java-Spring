@@ -9,6 +9,7 @@ import erisnilton.dev.admin.catalogo.infraestrutura.category.models.UpdateCatego
 import erisnilton.dev.admin.catalogo.infraestrutura.configuration.json.Json;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.CreateGenreRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.GenreResponse;
+import erisnilton.dev.admin.catalogo.infraestrutura.genre.models.UpdateGenreRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -72,6 +73,10 @@ public interface MockDsl {
     default GenreResponse retrieveGenre(final Identifier anId) throws Exception {
 
         return retrieve("/genres/", anId, GenreResponse.class);
+    }
+
+    default ResultActions updateAGenre(final Identifier anId, final UpdateGenreRequest aRequest) throws Exception {
+        return update("/genres/", anId, aRequest );
     }
 
     default ResultActions listGenres(final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
