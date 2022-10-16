@@ -1,5 +1,6 @@
 package erisnilton.dev.admin.catalogo;
 
+import erisnilton.dev.admin.catalogo.infraestrutura.castmember.persistence.CastMemberRepository;
 import erisnilton.dev.admin.catalogo.infraestrutura.category.persistence.CategoryRepository;
 import erisnilton.dev.admin.catalogo.infraestrutura.genre.persistence.GenreRepository;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -19,7 +20,8 @@ public class MySQLCleanUpExtension implements BeforeEachCallback {
 
         cleanUp(List.of(
                 appContext.getBean(GenreRepository.class),
-                appContext.getBean(CategoryRepository.class)
+                appContext.getBean(CategoryRepository.class),
+                appContext.getBean(CastMemberRepository.class)
         ));
     }
     private void cleanUp(final Collection<CrudRepository> repositories) {
