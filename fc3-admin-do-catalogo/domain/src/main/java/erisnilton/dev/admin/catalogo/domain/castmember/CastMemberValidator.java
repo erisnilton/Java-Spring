@@ -1,6 +1,5 @@
 package erisnilton.dev.admin.catalogo.domain.castmember;
 
-import erisnilton.dev.admin.catalogo.domain.category.Category;
 import erisnilton.dev.admin.catalogo.domain.validation.Error;
 import erisnilton.dev.admin.catalogo.domain.validation.ValidationHandler;
 import erisnilton.dev.admin.catalogo.domain.validation.Validator;
@@ -13,7 +12,7 @@ public class CastMemberValidator extends Validator {
 
     private CastMember castMember;
 
-public CastMemberValidator(final CastMember aCastMember, final ValidationHandler aHandler) {
+    public CastMemberValidator(final CastMember aCastMember, final ValidationHandler aHandler) {
         super(aHandler);
         this.castMember = aCastMember;
     }
@@ -26,19 +25,24 @@ public CastMemberValidator(final CastMember aCastMember, final ValidationHandler
 
     private void checkNameConstraints() {
         var name = this.castMember.getName();
-        if(name == null) {
+        if (name == null) {
             this.validationHandler().append(new Error("'name' should not be null"));
             return;
         }
 
-        if(name.isBlank()) {
+        if (name.isBlank()) {
             this.validationHandler().append(new Error("'name' should not be empty"));
             return;
         }
 
         final var length = name.trim().length();
-        if(length > NAME_MAX_LENGTH || length < NAME_MIN_LENGTH) {
+        if (length > NAME_MAX_LENGTH || length < NAME_MIN_LENGTH) {
             this.validationHandler().append(new Error("'name' must be between 3 and 255 character"));
+            return;
+        }
+
+        if(this.castMember.getType() == null){
+            this.validationHandler().append(new Error("'type' should not be null"));
             return;
         }
     }
