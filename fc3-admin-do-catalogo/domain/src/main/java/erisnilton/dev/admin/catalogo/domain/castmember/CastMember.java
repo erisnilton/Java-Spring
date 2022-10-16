@@ -10,10 +10,10 @@ import java.time.Instant;
 
 public class CastMember extends AggregateRoot<CastMemberID> implements Cloneable {
 
-    private final String name;
-    private final CastMemberType type;
-    private final Instant createdAt;
-    private final Instant updatedAt;
+    private  String name;
+    private  CastMemberType type;
+    private  Instant createdAt;
+    private  Instant updatedAt;
 
     private CastMember(
             final CastMemberID anId,
@@ -55,6 +55,14 @@ public class CastMember extends AggregateRoot<CastMemberID> implements Cloneable
                 castMember.getCreatedAt(),
                 castMember.getUpdatedAt()
         );
+    }
+
+    public CastMember update(final String aName, final CastMemberType aType) {
+        this.name = aName;
+        this.type = aType;
+        this.updatedAt = InstantUtils.now();
+        selfValidate();
+        return this;
     }
 
     public void validate(final ValidationHandler handler) {
