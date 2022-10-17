@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CastMemberRepository extends JpaRepository<CategoryJpaEntity, String> {
+public interface CastMemberRepository extends JpaRepository<CastMemberJpaEntity, String> {
 
-    Page<CategoryJpaEntity> findAll(Specification<CategoryJpaEntity> whereClause, Pageable page);
+    Page<CastMemberJpaEntity> findAll(Specification<CastMemberRepository> whereClause, Pageable page);
 }
