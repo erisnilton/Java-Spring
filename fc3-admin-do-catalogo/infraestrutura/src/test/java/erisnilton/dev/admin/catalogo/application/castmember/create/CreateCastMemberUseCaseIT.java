@@ -44,6 +44,7 @@ public class CreateCastMemberUseCaseIT {
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
 
+
         final var actualMember = this.repository.findById(actualOutput.id()).get();
 
         Assertions.assertEquals(expectedName,actualMember.getName());

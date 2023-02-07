@@ -6,14 +6,14 @@ import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberType;
 
 import java.time.Instant;
 
-public record CastMemberListOutput(
+public record ListCastMemberOutput(
         CastMemberID id,
         String name,
         CastMemberType type,
         Instant createdAt
 ) {
-    public static CastMemberListOutput from(final CastMember aCastMember) {
-        return new CastMemberListOutput(
+    public static ListCastMemberOutput from(final CastMember aCastMember) {
+        return new ListCastMemberOutput(
                 aCastMember.getId(),
                 aCastMember.getName(),
                 aCastMember.getType(),

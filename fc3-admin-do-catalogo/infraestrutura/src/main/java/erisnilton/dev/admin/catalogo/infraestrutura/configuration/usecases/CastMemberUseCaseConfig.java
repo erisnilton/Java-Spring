@@ -6,8 +6,8 @@ import erisnilton.dev.admin.catalogo.application.castmember.delete.DefaultDelete
 import erisnilton.dev.admin.catalogo.application.castmember.delete.DeleteCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.retrieve.get.DefaultGetCastMemberByIdUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.retrieve.get.GetCastMemberByIdUseCase;
-import erisnilton.dev.admin.catalogo.application.castmember.retrieve.list.CastMemberListUseCase;
-import erisnilton.dev.admin.catalogo.application.castmember.retrieve.list.DefaultCastMemberListUseCase;
+import erisnilton.dev.admin.catalogo.application.castmember.retrieve.list.ListCastMemberUseCase;
+import erisnilton.dev.admin.catalogo.application.castmember.retrieve.list.DefaultListCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.update.DefaultUpdateCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.update.UpdateCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberGateway;
@@ -41,8 +41,8 @@ public class CastMemberUseCaseConfig {
     }
 
     @Bean
-    public CastMemberListUseCase castMemberListUseCase() {
-        return new DefaultCastMemberListUseCase(castMemberGateway);
+    public ListCastMemberUseCase castMemberListUseCase() {
+        return new DefaultListCastMemberUseCase(castMemberGateway);
     }
 
     @Bean

@@ -4,16 +4,16 @@ import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberGateway;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 
-public class DefaultCastMemberListUseCase extends CastMemberListUseCase {
+public class DefaultListCastMemberUseCase extends ListCastMemberUseCase {
 
     private CastMemberGateway castMemberGateway;
 
-    public DefaultCastMemberListUseCase(CastMemberGateway castMemberGateway) {
+    public DefaultListCastMemberUseCase(CastMemberGateway castMemberGateway) {
         this.castMemberGateway = castMemberGateway;
     }
 
     @Override
-    public Pagination<CastMemberListOutput> execute(SearchQuery aQuery) {
-        return this.castMemberGateway.findAll(aQuery).map(CastMemberListOutput::from);
+    public Pagination<ListCastMemberOutput> execute(SearchQuery aQuery) {
+        return this.castMemberGateway.findAll(aQuery).map(ListCastMemberOutput::from);
     }
 }

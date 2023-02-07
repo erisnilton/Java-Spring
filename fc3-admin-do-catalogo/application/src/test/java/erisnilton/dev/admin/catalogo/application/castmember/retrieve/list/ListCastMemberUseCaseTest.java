@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class ListCastMemberUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultCastMemberListUseCase useCase;
+    private DefaultListCastMemberUseCase useCase;
 
     @Mock
     private CastMemberGateway castMemberGateway;

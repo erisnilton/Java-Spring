@@ -24,7 +24,7 @@ import static org.mockito.Mockito.times;
 public class ListCastMemberUseCaseIT {
 
     @Autowired
-    private CastMemberListUseCase useCase;
+    private ListCastMemberUseCase useCase;
 
     @Autowired
     private CastMemberRepository castMemberRepository;
@@ -54,7 +54,7 @@ public class ListCastMemberUseCaseIT {
         final var expectedTotal = 2;
 
         final var expectedItems = castMembers.stream()
-                .map(CastMemberListOutput::from)
+                .map(ListCastMemberOutput::from)
                 .toList();
 
         final var aQuery = new SearchQuery(
@@ -93,7 +93,7 @@ public class ListCastMemberUseCaseIT {
         final var expectedTotal = 0;
 
         final var castMembers = List.<CastMember>of();
-        final var expectedItems = List.<CastMemberListOutput>of();
+        final var expectedItems = List.<ListCastMemberOutput>of();
 
         Assertions.assertEquals(0, this.castMemberRepository.count());
 
