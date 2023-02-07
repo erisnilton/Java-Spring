@@ -11,7 +11,7 @@ import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
 
 import java.util.function.Supplier;
 
-public class DefaultUpdateCastMemberUseCase extends UpdateCastMemberUseCase{
+public non-sealed class DefaultUpdateCastMemberUseCase extends UpdateCastMemberUseCase{
 
     private CastMemberGateway gateway;
 

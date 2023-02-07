@@ -4,7 +4,7 @@ import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberGateway;
 import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
 import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 
-public class DefaultListCastMemberUseCase extends ListCastMemberUseCase {
+public non-sealed class DefaultListCastMemberUseCase extends ListCastMemberUseCase {
 
     private CastMemberGateway castMemberGateway;
 

@@ -4,7 +4,7 @@ import erisnilton.dev.admin.catalogo.domain.Genre.GenreID;
 import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberGateway;
 import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberID;
 
-public class DefaultDeleteCastMemberUseCase extends DeleteCastMemberUseCase{
+public non-sealed class DefaultDeleteCastMemberUseCase extends DeleteCastMemberUseCase{
 
     private CastMemberGateway castMemberGateway;
 

@@ -5,7 +5,7 @@ import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberGateway;
 import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationException;
 import erisnilton.dev.admin.catalogo.domain.validation.handler.Notification;
 
-public class DefaultCreateCastMemberUseCase extends CreateCastMemberUseCase {
+public non-sealed class DefaultCreateCastMemberUseCase extends CreateCastMemberUseCase {
 
     private CastMemberGateway castMemberGateway;
 
@@ -18,7 +18,7 @@ public class DefaultCreateCastMemberUseCase extends CreateCastMemberUseCase {
     public CreateCastMemberOutput execute(CreateCastMemberCommand aCommand) {
 
         final var aName = aCommand.name();
-        final var aType = aCommand.member();
+        final var aType = aCommand.type();
 
         final var notification = Notification.create();
         final var aCastMember = notification.validate(() -> CastMember.newMember(aName, aType));

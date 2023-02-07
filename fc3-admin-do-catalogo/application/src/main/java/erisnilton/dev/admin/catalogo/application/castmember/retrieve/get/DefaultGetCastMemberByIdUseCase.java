@@ -7,7 +7,7 @@ import erisnilton.dev.admin.catalogo.domain.exceptions.NotFoundException;
 
 import java.util.function.Supplier;
 
-public class DefaultGetCastMemberByIdUseCase extends GetCastMemberByIdUseCase {
+public non-sealed class DefaultGetCastMemberByIdUseCase extends GetCastMemberByIdUseCase {
 
     private CastMemberGateway castMemberGateway;
 

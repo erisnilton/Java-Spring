@@ -4,7 +4,7 @@ import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberType;
 
 public record CreateCastMemberCommand(
         String name,
-        CastMemberType member
+        CastMemberType type
 ) {
 
     public static CreateCastMemberCommand with(
