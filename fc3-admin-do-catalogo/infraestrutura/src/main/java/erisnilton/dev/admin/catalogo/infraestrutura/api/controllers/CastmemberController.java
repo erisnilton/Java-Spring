@@ -2,6 +2,7 @@ package erisnilton.dev.admin.catalogo.infraestrutura.api.controllers;
 
 import erisnilton.dev.admin.catalogo.application.castmember.create.CreateCastMemberCommand;
 import erisnilton.dev.admin.catalogo.application.castmember.create.CreateCastMemberUseCase;
+import erisnilton.dev.admin.catalogo.application.castmember.delete.DeleteCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.retrieve.get.GetCastMemberByIdUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.update.UpdateCastMemberCommand;
 import erisnilton.dev.admin.catalogo.application.castmember.update.UpdateCastMemberUseCase;
@@ -23,13 +24,18 @@ public class CastmemberController implements CastmemberAPI {
 
     private final UpdateCastMemberUseCase updateCastMemberUseCase;
 
+    private final DeleteCastMemberUseCase deleteCastMemberUseCase;
+
+
     public CastmemberController(
             final CreateCastMemberUseCase createCastMemberUseCase,
             final GetCastMemberByIdUseCase getCastMemberByIdUseCase,
-            final UpdateCastMemberUseCase updateCastMemberUseCase) {
+            final UpdateCastMemberUseCase updateCastMemberUseCase,
+            final DeleteCastMemberUseCase deleteCastMemberUseCase) {
         this.createCastMemberUseCase = Objects.requireNonNull(createCastMemberUseCase);
         this.getCastMemberByIdUseCase = Objects.requireNonNull(getCastMemberByIdUseCase);
         this.updateCastMemberUseCase = Objects.requireNonNull(updateCastMemberUseCase);
+        this.deleteCastMemberUseCase = Objects.requireNonNull(deleteCastMemberUseCase);
     }
 
     @Override
@@ -49,5 +55,10 @@ public class CastmemberController implements CastmemberAPI {
         final var aCommand = UpdateCastMemberCommand.with(id, aBody.name(), aBody.type());
         final var output = this.updateCastMemberUseCase.execute(aCommand);
         return ResponseEntity.ok(output);
+    }
+
+    @Override
+    public void deleteById(final String id) {
+        this.deleteCastMemberUseCase.execute(id);
     }
 }
