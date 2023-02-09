@@ -4,9 +4,13 @@ import erisnilton.dev.admin.catalogo.application.castmember.create.CreateCastMem
 import erisnilton.dev.admin.catalogo.application.castmember.create.CreateCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.delete.DeleteCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.retrieve.get.GetCastMemberByIdUseCase;
+import erisnilton.dev.admin.catalogo.application.castmember.retrieve.list.ListCastMemberUseCase;
 import erisnilton.dev.admin.catalogo.application.castmember.update.UpdateCastMemberCommand;
 import erisnilton.dev.admin.catalogo.application.castmember.update.UpdateCastMemberUseCase;
+import erisnilton.dev.admin.catalogo.domain.pagination.Pagination;
+import erisnilton.dev.admin.catalogo.domain.pagination.SearchQuery;
 import erisnilton.dev.admin.catalogo.infraestrutura.api.CastmemberAPI;
+import erisnilton.dev.admin.catalogo.infraestrutura.castmember.models.CastMemberListResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.castmember.models.CastMemberResponse;
 import erisnilton.dev.admin.catalogo.infraestrutura.castmember.models.CreateCastMemberRequest;
 import erisnilton.dev.admin.catalogo.infraestrutura.castmember.presenters.CastMemberPresenter;
@@ -26,16 +30,20 @@ public class CastmemberController implements CastmemberAPI {
 
     private final DeleteCastMemberUseCase deleteCastMemberUseCase;
 
+    private final ListCastMemberUseCase listCastMemberUseCase;
+
 
     public CastmemberController(
             final CreateCastMemberUseCase createCastMemberUseCase,
             final GetCastMemberByIdUseCase getCastMemberByIdUseCase,
             final UpdateCastMemberUseCase updateCastMemberUseCase,
-            final DeleteCastMemberUseCase deleteCastMemberUseCase) {
+            final DeleteCastMemberUseCase deleteCastMemberUseCase,
+            final ListCastMemberUseCase listCastMemberUseCase) {
         this.createCastMemberUseCase = Objects.requireNonNull(createCastMemberUseCase);
         this.getCastMemberByIdUseCase = Objects.requireNonNull(getCastMemberByIdUseCase);
         this.updateCastMemberUseCase = Objects.requireNonNull(updateCastMemberUseCase);
         this.deleteCastMemberUseCase = Objects.requireNonNull(deleteCastMemberUseCase);
+        this.listCastMemberUseCase = Objects.requireNonNull(listCastMemberUseCase);
     }
 
     @Override
@@ -43,6 +51,17 @@ public class CastmemberController implements CastmemberAPI {
         final var aCommand = CreateCastMemberCommand.with(input.name(), input.type());
         final var output = this.createCastMemberUseCase.execute(aCommand);
         return ResponseEntity.created(URI.create("/cast_members/" + output.id())).body(output);
+    }
+
+    @Override
+    public Pagination<CastMemberListResponse> list(
+            final String search,
+            final int page,
+            final int perPage,
+            final String sort,
+            final String direction) {
+        return this.listCastMemberUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
+                .map(CastMemberPresenter::present);
     }
 
     @Override
