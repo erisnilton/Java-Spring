@@ -294,7 +294,7 @@ public class CategoryE2ETest implements MockDsl {
         Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
         Assertions.assertEquals(0, categoryRepository.count());
 
-        deleteAGenre(CategoryID.from("123")).andExpect(status().isNoContent());
+        deleteACategory(CategoryID.from("123")).andExpect(status().isNoContent());
 
         Assertions.assertEquals(0, categoryRepository.count());
     }
