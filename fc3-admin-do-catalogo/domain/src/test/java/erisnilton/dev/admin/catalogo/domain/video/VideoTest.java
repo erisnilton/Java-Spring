@@ -66,7 +66,7 @@ public class VideoTest {
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
-        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()) );
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
 
     }
@@ -138,7 +138,7 @@ public class VideoTest {
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
-        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()) );
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
     }
 
@@ -206,7 +206,7 @@ public class VideoTest {
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
-        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()) );
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
     }
 
@@ -274,7 +274,7 @@ public class VideoTest {
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
-        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()) );
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
     }
 
@@ -340,7 +340,7 @@ public class VideoTest {
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
-        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()) );
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
     }
 
@@ -400,13 +400,13 @@ public class VideoTest {
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
         Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
-        Assertions.assertEquals(aThumbnailsMedia,actualVideo.getThumbnail().get());
+        Assertions.assertEquals(aThumbnailsMedia, actualVideo.getThumbnail().get());
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getTrailer().isEmpty());
         Assertions.assertTrue(actualVideo.getVideo().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
-        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()) );
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
     }
 
@@ -466,13 +466,13 @@ public class VideoTest {
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
         Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
-        Assertions.assertEquals(aThumbnailHalfMedia,actualVideo.getThumbnailHalf().get());
+        Assertions.assertEquals(aThumbnailHalfMedia, actualVideo.getThumbnailHalf().get());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getTrailer().isEmpty());
         Assertions.assertTrue(actualVideo.getVideo().isEmpty());
 
-        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()) );
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
     }
 
