@@ -41,7 +41,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
 
         final var expectedId = aCastMember.getId();
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aCommand = UpdateCastMemberCommand.with(
                 expectedId.getValue(),
@@ -71,7 +71,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAnInValidNullName_whenCallsUpdateCastMember_shouldReturnNotificationException() {
         // given
-        final var aCastMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aCastMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aCastMember.getId();
         final String expectedName = null;
@@ -102,7 +102,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAnInValidEmptyName_whenCallsUpdateCastMember_shouldReturnNotificationException() {
         // given
-        final var aCastMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aCastMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aCastMember.getId();
         final var expectedName = " ";
@@ -133,7 +133,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAnInValidNullType_whenCallsUpdateCastMember_shouldReturnNotificationException() {
         // given
-        final var aCastMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aCastMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aCastMember.getId();
         final var expectedName = " ";

@@ -1,12 +1,9 @@
 package erisnilton.dev.admin.catalogo.application.castmember.create;
 
-import com.github.javafaker.Faker;
 import erisnilton.dev.admin.catalogo.application.Fixture;
 import erisnilton.dev.admin.catalogo.application.UseCaseTest;
-import erisnilton.dev.admin.catalogo.application.genre.create.CreateGenreCommand;
 import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberGateway;
 import erisnilton.dev.admin.catalogo.domain.castmember.CastMemberType;
-import erisnilton.dev.admin.catalogo.domain.category.CategoryID;
 import erisnilton.dev.admin.catalogo.domain.exceptions.NotificationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -39,7 +36,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
     public void givenAValidCommand_whenCallsCreateCastMember_shouldReturnCastMemberId() {
         // given
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aCommand =
                 CreateCastMemberCommand.with(expectedName, expectedType);
@@ -67,7 +64,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
     public void givenAInvalidEmptyName_whenCallsCreateCastMember_shouldReturnNotificationException() {
         // given
         final var expectedName = " ";
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorMessage = "'name' should not be empty";
         final var expectedErrorCount = 1;
@@ -90,7 +87,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
     public void givenAInvalidNullName_whenCallsCreateCastMember_shouldReturnNotificationException() {
         // given
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorMessage = "'name' should not be null";
         final var expectedErrorCount = 1;
